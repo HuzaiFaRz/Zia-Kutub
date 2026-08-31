@@ -11,8 +11,36 @@ html {
 body {
   width: 100%;
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
   background: #ffffff;
   color: #222;
+  font-family: "Cinzel", serif;
 }
-button{cursor: pointer;}
+button {
+  cursor: pointer;
+}
+
+@font-face {
+  font-family: "Cinzel-Regular";
+  src: url("./assets/Fonts/Cinzel/Cinzel-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Cinzel-SemiBold";
+  src: url("./assets/Fonts/Cinzel/Cinzel-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Cinzel-Bold";
+  src: url("./assets/Fonts/Cinzel/Cinzel-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Cinzel-ExtraBold";
+  src: url("./assets/Fonts/Cinzel/Cinzel-ExtraBold.ttf") format("truetype");
+}
+@theme {
+  --font-cinzel-regular: "Cinzel-Regular";
+  --font-cinzel-semibold: "Cinzel-SemiBold";
+  --font-cinzel-bold: "Cinzel-Bold";
+  --font-cinzel-extrabold: "Cinzel-ExtraBold";
+}

@@ -27,7 +27,7 @@ const TopBar = () => {
   return (
     <>
       <header className="w-full relative">
-        <div className="w-full p-2.5 bg-black text-white text-sm text-center font-bold">
+        <div className="w-full p-2.5 bg-black text-white text-sm text-center font-cinzel-regular font-bold">
           <Swiper
             slidesPerView={1}
             modules={[Autoplay]}
@@ -45,7 +45,7 @@ const TopBar = () => {
             </SwiperSlide>
           </Swiper>
         </div>
-        <div className="w-full p-2 bg-blue-50 text-black border-b flex flex-wrap justify-around items-center text-sm">
+        <div className="w-full p-2 bg-blue-50 text-black border-b flex flex-wrap justify-around items-center text-sm font-cinzel-semibold tracking-wide">
           <a
             href="https://mail.google.com/mail/?view=cm&fs=1&to=ziakutub@gmail.com"
             target="_blank"
@@ -59,7 +59,7 @@ const TopBar = () => {
             💬 +92 349 2279579
           </a>
         </div>
-        <div className="w-full bg-blue-50 text-black no-underline flex flex-wrap justify-center sm:justify-between items-center gap-10 md:gap-0 py-4 md:py-0 px-3 sm:px-5 border-b">
+        <div className="w-full bg-blue-50 text-black no-underline flex flex-wrap justify-center sm:justify-between items-center gap-10 md:gap-0 py-4 md:py-0 px-3 sm:px-5 border-b font-cinzel-semibold">
           <a href="/">
             <img
               src="src\assets\Images\22.png"
@@ -106,7 +106,7 @@ const TopBar = () => {
               <a
                 key={ind}
                 href={linkURL}
-                className="text-sm lg:text-lg hover:underline"
+                className="text-sm lg:text-lg hover:underline uppercase font-cinzel-semibold"
               >
                 {linkName}
               </a>
@@ -132,7 +132,7 @@ const TopBar = () => {
             <a
               key={ind}
               href={linkURL}
-              className="hover:underline text-lg sm:text-2xl"
+              className="hover:underline text-lg sm:text-2xl uppercase font-cinzel-semibold"
             >
               {linkName}
             </a>
