@@ -5,7 +5,7 @@ import { BsCart4 } from "react-icons/bs";
 import { RxCross1 } from "react-icons/rx";
 import { FiMenu } from "react-icons/fi";
 import { useEffect, useState } from "react";
-
+import Logo from "../assets/Images/22.png";
 const TopBar = () => {
   const [asideOpen, setAsideOpen] = useState(false);
 
@@ -79,11 +79,7 @@ const TopBar = () => {
         </div>
         <div className="w-full bg-blue-50 text-black no-underline flex flex-wrap justify-center sm:justify-between items-center gap-10 md:gap-0 py-4 md:py-0 px-3 sm:px-5 border-b font-cinzel-semibold">
           <a href="/">
-            <img
-              src="src\assets\Images\22.png"
-              alt="Logo"
-              className="w-[150px] h-[140px]"
-            />
+            <img src={Logo} alt="Logo" className="w-[150px] h-[140px]" />
           </a>
           <form className="flex flex-wrap justify-center items-center gap-3">
             <input
