@@ -4,7 +4,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
 import { RxCross1 } from "react-icons/rx";
 import { FiMenu } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TopBar = () => {
   const [asideOpen, setAsideOpen] = useState(false);
@@ -12,6 +12,24 @@ const TopBar = () => {
   const aside_Handler = () => {
     setAsideOpen(!asideOpen);
   };
+
+  const windowResizeing = () => {
+    if (window.innerWidth > 768) {
+      if (asideOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+      document.body.style.overflow = "auto";
+      return;
+    }
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = asideOpen ? "hidden" : "";
+    window.addEventListener("resize", windowResizeing);
+    return () => window.removeEventListener("resize", windowResizeing);
+  });
 
   const nav_Links = [
     { linkName: "Quran Kareem", linkURL: "qurankareem" },
