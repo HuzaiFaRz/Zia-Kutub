@@ -1,6 +1,5 @@
-@import "tailwindcss";
-
-* {
+ @import "tailwindcss";
+*{
   box-sizing: border-box;
 }
 
@@ -15,6 +14,8 @@ body {
   color: #222;
   font-family: "Cinzel", serif;
 }
+
+
 button {
   cursor: pointer;
 }
@@ -43,4 +44,4 @@ button {
   --font-cinzel-semibold: "Cinzel-SemiBold";
   --font-cinzel-bold: "Cinzel-Bold";
   --font-cinzel-extrabold: "Cinzel-ExtraBold";
-}
+} 

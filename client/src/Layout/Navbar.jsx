@@ -6,7 +6,7 @@ import { RxCross1 } from "react-icons/rx";
 import { FiMenu } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import Logo from "../assets/Images/22.png";
-const TopBar = () => {
+const Navbar = () => {
   const [asideOpen, setAsideOpen] = useState(false);
 
   const aside_Handler = () => {
@@ -157,4 +157,4 @@ const TopBar = () => {
   );
 };
 
-export default TopBar;
+export default Navbar;
