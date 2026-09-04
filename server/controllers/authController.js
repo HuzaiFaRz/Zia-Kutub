@@ -8,10 +8,18 @@ export const signupUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     // Basic Validation
-    if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json({ message: "All fields are must be required" });
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (
+      !name ||
+      !email ||
+      !password ||
+      /^\s|\s$|\s{2,}/.test(name) ||
+      name.trim().length < 3 ||
+      password.includes(" ") ||
+      password.length < 8 ||
+      !emailRegex.test(email?.trim())
+    ) {
+      return res.status(400).json({ message: "No invalid inputs allowed" });
     }
 
     // Check existing user
@@ -19,7 +27,7 @@ export const signupUser = async (req, res) => {
 
     if (existingUser) {
       return res.status(400).json({
-        message: "User already registered",
+        message: "User already registered !",
       });
     }
 
@@ -36,6 +44,7 @@ export const signupUser = async (req, res) => {
     // Send response
     res.status(201).json({
       message: "User registered successfully",
+      success: true,
       user: {
         id: user._id,
         name: user.name,
@@ -46,8 +55,7 @@ export const signupUser = async (req, res) => {
   } catch (error) {
     console.error("Signup Error:", error);
     return res.status(500).json({
-      message: "Server Error",
-      error: error.message,
+      message: error.message,
     });
   }
 };
@@ -59,9 +67,7 @@ export const loginUser = async (req, res) => {
 
     // Basic Validation
     if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "All fields are must be required" });
+      return res.status(400).json({ message: "No invalid inputs allowed" });
     }
 
     // Check user
@@ -69,7 +75,7 @@ export const loginUser = async (req, res) => {
 
     if (!user) {
       return res.status(400).json({
-        message: "User not found",
+        message: "User not found !",
       });
     }
 
@@ -90,6 +96,7 @@ export const loginUser = async (req, res) => {
     // Send response
     res.status(201).json({
       message: "User login successfully",
+      success: true,
       token,
       user: {
         id: user._id,
