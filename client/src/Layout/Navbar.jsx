@@ -4,52 +4,51 @@ import { FaRegHeart } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
 import { RxCross1 } from "react-icons/rx";
 import { FiMenu } from "react-icons/fi";
-import { useEffect, useState } from "react";
 import Logo from "../assets/Images/22.png";
-const Navbar = () => {
-  const [asideOpen, setAsideOpen] = useState(false);
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router";
 
-  const aside_Handler = () => {
-    setAsideOpen(!asideOpen);
+const Navbar = () => {
+  const [headerAsideOpen, setHeaderAsideOpen] = useState(false);
+  const [cartAsideOpen, setCartAsideOpen] = useState(false);
+  const [wishListBoxOpen, setWishListBoxOpen] = useState(false);
+
+  const headerAsideHandler = () => {
+    setHeaderAsideOpen(!headerAsideOpen);
   };
 
-  const windowResizeing = () => {
-    if (window.innerWidth > 768) {
-      if (asideOpen) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.overflow = "auto";
-      }
-      document.body.style.overflow = "auto";
-      return;
-    }
+  const cartAsideHandler = () => {
+    setCartAsideOpen(!cartAsideOpen);
+  };
+
+  const wishListBoxHandler = () => {
+    setWishListBoxOpen(!wishListBoxOpen);
   };
 
   useEffect(() => {
-    document.body.style.overflow = asideOpen ? "hidden" : "";
-    window.addEventListener("resize", windowResizeing);
-    return () => window.removeEventListener("resize", windowResizeing);
+    document.body.style.overflow =
+      headerAsideOpen || wishListBoxOpen || cartAsideOpen ? "hidden" : "auto";
   });
 
-  const nav_Links = [
+  const navLinks = [
     { linkName: "Quran Kareem", linkURL: "qurankareem" },
-    { linkName: "Qaida", linkURL: "qaida" },
-    { linkName: "Surahs", linkURL: "surahs" },
-    { linkName: "Books", linkURL: "books" },
-    { linkName: "Accessories", linkURL: "accessories" },
     { linkName: "Prayer Mat", linkURL: "prayermat" },
     { linkName: "Koofi", linkURL: "koofi" },
+    { linkName: "Books", linkURL: "books" },
     { linkName: "Fragrance Oil", linkURL: "fragranceoil" },
+    { linkName: "Accessories", linkURL: "accessories" },
   ];
 
   return (
     <>
+      {/* Header */}
       <header className="w-full relative">
         <div className="w-full p-2.5 bg-black text-white text-sm text-center font-cinzel-regular font-bold">
           <Swiper
             slidesPerView={1}
             modules={[Autoplay]}
             loop={true}
+            allowTouchMove={false}
             autoplay={{
               delay: 3000,
               disableOnInteraction: false,
@@ -65,21 +64,21 @@ const Navbar = () => {
         </div>
         <div className="w-full p-2 bg-blue-50 text-black border-b flex flex-wrap justify-around items-center text-sm font-cinzel-semibold tracking-wide">
           <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=ziakutub@gmail.com"
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=ziakutubcenter@gmail.com"
             target="_blank"
           >
-            ✉ ziakutub@gmail.com
+            ✉ ziakutubcenter@gmail.com
           </a>
           <a
-            href="https://wa.me/+923492279579?text=Assalamualaikum! Can I Get More Info About your Store"
+            href="https://wa.me/+923083362107?text=Assalamualaikum! Can I Get More Info About your Store"
             target="_blank"
           >
-            💬 +92 349 2279579
+            💬 +92 308 3362107
           </a>
         </div>
         <div className="w-full bg-blue-50 text-black no-underline flex flex-wrap justify-center sm:justify-between items-center gap-10 md:gap-0 py-4 md:py-0 px-3 sm:px-5 border-b font-cinzel-semibold">
           <a href="/">
-            <img src={Logo} alt="Logo" className="w-[150px] h-[140px]" />
+            <img src={Logo} alt="Logo" className="w-37.5 h-35" />
           </a>
           <form className="flex flex-wrap justify-center items-center gap-3">
             <input
@@ -94,65 +93,95 @@ const Navbar = () => {
           </form>
 
           <div className="flex flex-wrap items-center justify-center gap-5">
-            <button className="relative">
+            <button className="relative" onClick={wishListBoxHandler}>
               <FaRegHeart size={40} />
               <p className="absolute bg-black text-lg text-white rounded-full w-6.25 h-6.25 flex items-center justify-center -top-2 -right-3">
                 0
               </p>
             </button>
-            <button className="relative">
+            <button className="relative" onClick={cartAsideHandler}>
               <BsCart4 size={40} />
               <p className="absolute bg-black text-lg text-white rounded-full w-6.25 h-6.25 flex items-center justify-center -top-2 -right-3">
                 0
               </p>
             </button>
 
-            <button className="flex md:hidden" onClick={aside_Handler}>
+            <button className="flex md:hidden" onClick={headerAsideHandler}>
               <FiMenu size={40} />
             </button>
           </div>
         </div>
 
         <nav className="w-full p-2 bg-black text-white hidden md:flex flex-row justify-evenly items-center relative">
-          {nav_Links.map((link, ind) => {
+          {navLinks.map((link, ind) => {
             const { linkName, linkURL } = link;
             return (
-              <a
+              <NavLink
                 key={ind}
-                href={linkURL}
+                to={linkURL}
                 className="text-sm lg:text-lg hover:underline uppercase font-cinzel-semibold"
               >
                 {linkName}
-              </a>
+              </NavLink>
             );
           })}
         </nav>
       </header>
 
+      {/* Asides Overlay */}
       <div
-        className={`w-full h-screen fixed top-0 left-0 bg-black/40 backdrop-blur-xs z-50 ${asideOpen ? "flex" : "hidden"}  transition-all`}
-        onClick={aside_Handler}
+        className={`w-full h-screen fixed top-0 left-0 bg-black/40 backdrop-blur-xs z-50 ${headerAsideOpen || cartAsideOpen || wishListBoxOpen ? "flex" : "hidden"}  transition-all`}
+        onClick={() => {
+          if (headerAsideOpen) return headerAsideHandler();
+          if (cartAsideOpen) return cartAsideHandler();
+          if (wishListBoxOpen) return setWishListBoxOpen();
+        }}
       ></div>
 
+      {/* Header Aside */}
       <aside
-        className={`w-[75%] sm:w-1/2 h-screen fixed top-0 bg-black text-white z-100 flex flex-col justify-evenly items-start px-8 ${asideOpen ? "left-0" : "-left-full"} transition-all`}
+        className={`w-[75%] sm:w-1/2 h-screen fixed top-0 bg-black text-white flex flex-col justify-evenly items-start px-8 ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all overflow-auto`}
       >
-        <button className="absolute right-10 top-5" onClick={aside_Handler}>
+        <button
+          className="absolute right-10 top-5"
+          onClick={headerAsideHandler}
+        >
           <RxCross1 size={30} />
         </button>
-        {nav_Links.map((link, ind) => {
+        {navLinks.map((link, ind) => {
           const { linkName, linkURL } = link;
           return (
-            <a
+            <NavLink
               key={ind}
-              href={linkURL}
+              to={linkURL}
               className="hover:underline text-lg sm:text-2xl uppercase font-cinzel-semibold"
             >
               {linkName}
-            </a>
+            </NavLink>
           );
         })}
       </aside>
+
+      {/* Cart Aside */}
+      <aside
+        className={`w-[75%] sm:w-1/2 h-screen fixed top-0 bg-black text-white flex flex-col justify-center items-center px-8 ${cartAsideOpen ? "right-0 z-100" : "-right-full z-0"} transition-all overflow-auto`}
+      >
+        <button className="absolute left-10 top-5" onClick={cartAsideHandler}>
+          <RxCross1 size={30} />
+        </button>
+        <p className="text-4xl">No Items</p>
+      </aside>
+
+      {/* WishList Box */}
+
+      <div
+        className={`w-full sm:w-160 min-h-62.5 fixed left-1/2 top-1/2 -translate-1/2 bg-black text-white flex flex-col justify-center items-center px-8 ${wishListBoxOpen ? "opacity-100 z-100" : "opacity-0 z-0 hidden"} transition-all overflow-auto`}
+      >
+        <button className="absolute right-3 top-3" onClick={wishListBoxHandler}>
+          <RxCross1 size={20} />
+        </button>
+        <p className="text-4xl">No Items</p>
+      </div>
     </>
   );
 };

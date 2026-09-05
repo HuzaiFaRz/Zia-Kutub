@@ -9,19 +9,11 @@ const Hero = () => {
       shortDetails:
         "A beautifully designed edition of the Holy Quran, perfect for daily recitation, reflection, and spiritual connection.",
     },
-
     {
-      url: "https://images.unsplash.com/photo-1718466044521-d38654f3ba0a?q=80&w=773&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1hfHx8fA%3D%3D",
-      name: "Premium Attar Collection",
+      url: "https://images.unsplash.com/photo-1600166898405-da9535204843?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "Premium Prayer Mat",
       shortDetails:
-        "Experience elegant, long-lasting Islamic fragrances crafted with rich and captivating traditional scents.",
-    },
-
-    {
-      url: "https://images.unsplash.com/photo-1641816514743-d264c1481585?q=80&w=1031&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fHx8fA%3D%3D",
-      name: "Islamic Books & Hadith",
-      shortDetails:
-        "Explore a carefully selected collection of Hadith, Seerah, Islamic teachings, and books for deeper knowledge and understanding.",
+        "A soft and beautifully crafted prayer mat offering comfort, quality, and a peaceful experience during every Salah.",
     },
 
     {
@@ -32,10 +24,23 @@ const Hero = () => {
     },
 
     {
-      url: "https://images.unsplash.com/photo-1589725617374-6d1cd65c8014?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjV8fHByYXllciUyMG1hdHxlbnwwfHwwfHx8MA%3D%3D",
-      name: "Premium Prayer Mat",
+      url: "https://images.unsplash.com/photo-1641816514743-d264c1481585?q=80&w=1031&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fHx8fA%3D%3D",
+      name: "Islamic Books",
       shortDetails:
-        "A soft and beautifully crafted prayer mat offering comfort, quality, and a peaceful experience during every Salah.",
+        "Discover Qaida, Wazaif, Duas, Islamic learning books, and other valuable resources for everyday spiritual and religious guidance.",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1718466044521-d38654f3ba0a?q=80&w=773&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1hfHx8fA%3D%3D",
+      name: "Premium Attar Collection",
+      shortDetails:
+        "Experience elegant, long-lasting Islamic fragrances crafted with rich and captivating traditional scents.",
+    },
+
+    {
+      url: "https://images.unsplash.com/photo-1768703652161-7ae34d2f3307?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDJ8fGlzbGFtaWMlMjBhY2Nlc3Nvcmllc3xlbnwwfHwwfHx8MA%3D%3D",
+      name: "Islamic Accessories",
+      shortDetails:
+        "Explore beautiful Islamic accessories including Tasbeeh, prayer essentials, caps, scarves, and other meaningful items for everyday use.",
     },
   ];
 
@@ -86,7 +91,7 @@ const Hero = () => {
                    hover:scale-105
                    transition-all duration-300 font-cinzel-regular"
                 >
-                  View More
+                  Shop Now
                   <span className="text-lg">→</span>
                 </button>
               </div>
