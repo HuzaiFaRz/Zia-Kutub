@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { FaEye, FaRegistered } from "react-icons/fa";
-import { IoEyeOff } from "react-icons/io5";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+
 import { NavLink, useNavigate } from "react-router";
 import api from "../api/axios";
+import { Eye, EyeOff, LoaderCircle, MailBadge } from "lucide-react";
 
 const Sign_Up = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -143,7 +142,7 @@ const Sign_Up = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
               >
-                {showPassword ? <FaEye size={20} /> : <IoEyeOff size={20} />}
+                {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
               </button>
             </div>
           </div>
@@ -156,9 +155,9 @@ const Sign_Up = () => {
           >
             {loading ? "Please Wait" : "Sign Up"}
             {loading ? (
-              <AiOutlineLoading3Quarters size={20} className="animate-spin" />
+              <LoaderCircle size={20} className="animate-spin" />
             ) : (
-              <FaRegistered size={20} />
+              <MailBadge size={20} />
             )}
           </button>
         </form>

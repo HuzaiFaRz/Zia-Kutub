@@ -13,6 +13,11 @@ import Koofi from "./Pages/Koofi";
 import Books from "./Pages/Books";
 import Fragrance_Oil from "./Pages/Fragrance_Oil";
 import Accessories from "./Pages/Accessories";
+import Admin_Dashboard from "./Admin/Admin_Dashboard";
+import Orders from "./Admin/Orders";
+import Add_Product from "./Admin/Add_Product";
+import Products from "./Admin/Products";
+import Edit_Product from "./Admin/Edit_Product";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +33,21 @@ const router = createBrowserRouter([
       { path: "/books", element: <Books /> },
       { path: "/fragranceoil", element: <Fragrance_Oil /> },
       { path: "/accessories", element: <Accessories /> },
+    ],
+  },
+
+  {
+    path: "/admin",
+    element: <Admin_Dashboard />,
+
+    children: [
+      {
+        path: "products",
+        element: <Products />,
+      },
+      { path: "products/add", element: <Add_Product /> },
+      { path: "products/edit/:id", element: <Edit_Product /> },
+      { path: "orders", element: <Orders /> },
     ],
   },
 
