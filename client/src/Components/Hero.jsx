@@ -45,70 +45,71 @@ const Hero = () => {
   ];
 
   return (
-    <Swiper
-      slidesPerView={1}
-      modules={[Autoplay]}
-      loop={true}
-      autoplay={{
-        delay: 4000,
-        disableOnInteraction: false,
-      }}
-    >
-      {hero_Images.map((sliderDetils, ind) => {
-        const { url, name, shortDetails } = sliderDetils;
+    <div className="bg-mehroon w-full h-full p-3">
+      <Swiper
+        slidesPerView={1}
+        modules={[Autoplay]}
+        loop={true}
+        autoplay={{
+          delay: 4000,
+          disableOnInteraction: false,
+        }}
+      >
+        {hero_Images.map((sliderDetils, ind) => {
+          const { url, name, shortDetails } = sliderDetils;
 
-        return (
-          <SwiperSlide className="p-4" key={ind}>
-            <div className="min-h-112.5 rounded-2xl overflow-hidden bg-gray-50 flex flex-col md:flex-row items-center">
-              <div className="w-full md:w-1/2 p-8 sm:p-10 lg:p-14 order-2 md:order-1">
-                <span
-                  className="inline-block mb-4 px-4 py-1.5 rounded-full
-                       bg-green-100 text-green-700 text-sm font-cinzel-extrabold"
-                >
-                  Islamic Collection
-                </span>
+          return (
+            <SwiperSlide key={ind}>
+              <div className="min-h-112.5 overflow-hidden flex flex-col md:flex-row items-center">
+                <div className="w-full md:w-1/2 p-8 sm:p-10 lg:p-14 order-2 md:order-1">
+                  <span
+                    className="inline-block mb-4 px-4 py-1 rounded-r-2xl
+                       bg-beige text-brown text-sm font-cinzel-bold"
+                  >
+                    Islamic Collection
+                  </span>
 
-                <h2
-                  className="text-3xl sm:text-4xl lg:text-5xl font-bold
-                     text-gray-900 leading-tight mb-5 font-cinzel-bold"
-                >
-                  {name}
-                </h2>
+                  <h2
+                    className="text-3xl sm:text-4xl lg:text-5xl font-bold
+                     text-beige leading-tight mb-5 font-cinzel-bold"
+                  >
+                    {name}
+                  </h2>
 
-                <p
-                  className="text-gray-600 text-base sm:text-lg leading-relaxed
+                  <p
+                    className="text-beige/80 text-base sm:text-lg leading-relaxed
                     max-w-lg mb-8 font-cinzel-regular"
-                >
-                  {shortDetails}
-                </p>
+                  >
+                    {shortDetails}
+                  </p>
 
-                <button
-                  className="inline-flex items-center gap-2
+                  <button
+                    className="inline-flex items-center gap-2
                    px-6 py-3 rounded-full
-                   bg-green-700 text-white font-semibold
+                   bg-brown text-beige font-semibold
                    shadow-md
-                   hover:bg-green-800
+                   hover:bg-brown/90
                    hover:scale-105
-                   transition-all duration-300 font-cinzel-regular"
-                >
-                  Shop Now
-                  <span className="text-lg">→</span>
-                </button>
-              </div>
+                   transition-all duration-300 font-cinzel-bold"
+                  >
+                    Shop Now
+                    <span className="text-lg">→</span>
+                  </button>
+                </div>
 
-              <div
-                className="w-full md:w-1/2 h-75 md:h-112.5
+                <div
+                  className="w-full md:w-1/2 h-75 md:h-112.5
                     p-4 md:p-6 order-1 md:order-2"
-              >
-                <img
-                  src={url}
-                  alt={name}
-                  className="w-full h-full object-cover rounded-xl"
-                />
+                >
+                  <img
+                    src={url}
+                    alt={name}
+                    className="w-full h-full object-cover rounded-xl"
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* <div className="relative overflow-hidden rounded-2xl min-h-112.5 flex items-center">
+              {/* <div className="relative overflow-hidden rounded-2xl min-h-112.5 flex items-center">
               <img
                 src={url}
                 alt={name}
@@ -130,10 +131,11 @@ const Hero = () => {
                 </button>
               </div>
             </div> */}
-          </SwiperSlide>
-        );
-      })}
-    </Swiper>
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
+    </div>
   );
 };
 

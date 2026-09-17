@@ -1,15 +1,10 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-
-import Logo from "../assets/Images/22.png";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
-import { CircleX, Heart, Logs, ShoppingCartMinus } from "lucide-react";
+import { Handbag, Logs, MessageCircle, Search, User, X } from "lucide-react";
 
 const Navbar = () => {
   const [headerAsideOpen, setHeaderAsideOpen] = useState(false);
   const [cartAsideOpen, setCartAsideOpen] = useState(false);
-  const [wishListBoxOpen, setWishListBoxOpen] = useState(false);
 
   const headerAsideHandler = () => {
     setHeaderAsideOpen(!headerAsideOpen);
@@ -19,13 +14,9 @@ const Navbar = () => {
     setCartAsideOpen(!cartAsideOpen);
   };
 
-  const wishListBoxHandler = () => {
-    setWishListBoxOpen(!wishListBoxOpen);
-  };
-
   useEffect(() => {
     document.body.style.overflow =
-      headerAsideOpen || wishListBoxOpen || cartAsideOpen ? "hidden" : "auto";
+      headerAsideOpen || cartAsideOpen ? "hidden" : "auto";
   });
 
   const navLinks = [
@@ -39,112 +30,91 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Header */}
-      <header className="w-full relative">
-        <div className="w-full p-2.5 bg-black text-white text-sm text-center font-cinzel-regular font-bold">
-          <Swiper
-            slidesPerView={1}
-            modules={[Autoplay]}
-            loop={true}
-            allowTouchMove={false}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-          >
-            <SwiperSlide>
-              Free shipping in Karachi for orders over PKR 2,999
-            </SwiperSlide>
-            <SwiperSlide>
-              Free shipping in Karachi for orders over PKR 2,999
-            </SwiperSlide>
-          </Swiper>
-        </div>
-        <div className="w-full p-2 bg-blue-50 text-black border-b flex flex-wrap justify-around items-center text-sm font-cinzel-semibold tracking-wide">
-          <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=ziakutubcenter@gmail.com"
-            target="_blank"
-          >
-            ✉ ziakutubcenter@gmail.com
-          </a>
-          <a
-            href="https://wa.me/+923083362107?text=Assalamualaikum! Can I Get More Info About your Store"
-            target="_blank"
-          >
-            💬 +92 308 3362107
-          </a>
-        </div>
-        <div className="w-full bg-blue-50 text-black no-underline flex flex-wrap justify-center sm:justify-between items-center gap-10 md:gap-0 py-4 md:py-0 px-3 sm:px-5 border-b font-cinzel-semibold">
-          <a href="/">
-            <img src={Logo} alt="Logo" className="w-37.5 h-35" />
-          </a>
-          <form className="flex flex-wrap justify-center items-center gap-3">
-            <input
-              type="search"
-              placeholder="Search..."
-              className="px-3 py-2 border min-w-80 focus:outline-0"
+      <header className="w-full p-2 xl:p-3 fixed top-0 z-10 bg-beige">
+        <nav className="bg-mehroon w-full h-auto px-6 lg:px-10 xl:px-16 py-4 rounded-t-4xl shadow-2xl flex flex-col gap-10">
+          <div className="w-full flex flex-wrap justify-between items-start gap-5 sm:gap-0">
+            <NavLink
+              to={"/"}
+              className="font-playfair-bold text-beige underline underline-offset-4 text-3xl lg:text-4xl cursor-pointer"
+            >
+              Zia Kutub
+            </NavLink>
+
+            <form className="relative text-beige w-full sm:w-auto sm:ml-auto sm:mr-4 order-3 sm:order-2">
+              <input
+                type="search"
+                className="outline-0 text-sm lg:text-lg border p-2 w-full sm:min-w-64 placeholder:text-beige"
+                placeholder="Product Search"
+              />
+              <button type="submit">
+                <Search
+                  className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                  size={28}
+                />
+              </button>
+            </form>
+
+            <div className="flex gap-3 text-beige sm:ml-4 order-2 sm:order-3">
+              <NavLink to={"/signup"}>
+                <User size={35} />
+              </NavLink>
+              <button className="relative" onClick={cartAsideHandler}>
+                <Handbag size={35} />
+                <span className="absolute bg-brown text-sm rounded-full w-6.25 h-6.25 flex items-center justify-center -top-2 -right-3">
+                  0
+                </span>
+              </button>
+            </div>
+          </div>
+          <div className="w-full flex flex-wrap justify-between items-center text-beige">
+            <Logs
+              size={35}
+              onClick={headerAsideHandler}
+              className="flex end:hidden"
             />
 
-            <button className="px-5 py-2 bg-black rounded-2xl text-white">
-              Search
-            </button>
-          </form>
+            <div className="hidden end:flex gap-3 lg:gap-5 xl:gap-8 items-center font-lato-regular">
+              {navLinks.map((link, ind) => {
+                const { linkName, linkURL } = link;
+                return (
+                  <NavLink
+                    key={ind}
+                    to={linkURL}
+                    className="text-sm lg:text-lg p-2 tracking-wider"
+                  >
+                    {linkName}
+                  </NavLink>
+                );
+              })}
+            </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-5">
-            <button className="relative" onClick={wishListBoxHandler}>
-              <Heart size={40} />
-              <p className="absolute bg-black text-lg text-white rounded-full w-6.25 h-6.25 flex items-center justify-center -top-2 -right-3">
-                0
-              </p>
-            </button>
-            <button className="relative" onClick={cartAsideHandler}>
-              <ShoppingCartMinus size={40} />
-              <p className="absolute bg-black text-lg text-white rounded-full w-6.25 h-6.25 flex items-center justify-center -top-2 -right-3">
-                0
-              </p>
-            </button>
-
-            <button className="flex md:hidden" onClick={headerAsideHandler}>
-              <Logs size={40} />
-            </button>
+            <a
+              href="https://wa.me/+923083362107?text=Assalamualaikum! Can I Get More Info About your Store"
+              target="_blank"
+              className="flex items-center gap-2  bg-brown text-beige font-cinzel-bold px-3 lg:px-5 p-2 rounded-r-4xl"
+            >
+              <MessageCircle className="size-4 lg:size-6" />
+              <span className="text-sm lg:text-lg">Contact Us</span>
+            </a>
           </div>
-        </div>
-
-        <nav className="w-full p-2 bg-black text-white hidden md:flex flex-row justify-evenly items-center relative">
-          {navLinks.map((link, ind) => {
-            const { linkName, linkURL } = link;
-            return (
-              <NavLink
-                key={ind}
-                to={linkURL}
-                className="text-sm lg:text-lg hover:underline uppercase font-cinzel-semibold"
-              >
-                {linkName}
-              </NavLink>
-            );
-          })}
         </nav>
       </header>
 
       {/* Asides Overlay */}
       <div
-        className={`w-full h-screen fixed top-0 left-0 bg-black/40 backdrop-blur-xs z-50 ${headerAsideOpen || cartAsideOpen || wishListBoxOpen ? "flex" : "hidden"}  transition-all`}
+        className={`w-full h-screen fixed top-0 left-0 bg-black/40 backdrop-blur-xs z-50 ${headerAsideOpen || cartAsideOpen ? "flex" : "hidden"}  transition-all`}
         onClick={() => {
           if (headerAsideOpen) return headerAsideHandler();
           if (cartAsideOpen) return cartAsideHandler();
-          if (wishListBoxOpen) return setWishListBoxOpen();
         }}
       ></div>
 
       {/* Header Aside */}
       <aside
-        className={`w-[75%] sm:w-1/2 h-screen fixed top-0 bg-black text-white flex flex-col justify-evenly items-start px-8 ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all overflow-auto`}
+        className={`w-[75%] sm:w-1/2 h-screen fixed top-0 bg-mehroon/80 text-beige flex flex-col justify-evenly items-start px-8 ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all overflow-hidden`}
       >
-        <button
-          className="absolute right-10 top-5"
-          onClick={headerAsideHandler}
-        >
-          <CircleX size={30} />
+        <button className="absolute right-5 top-5" onClick={headerAsideHandler}>
+          <X size={40} />
         </button>
         {navLinks.map((link, ind) => {
           const { linkName, linkURL } = link;
@@ -152,7 +122,7 @@ const Navbar = () => {
             <NavLink
               key={ind}
               to={linkURL}
-              className="hover:underline text-lg sm:text-2xl uppercase font-cinzel-semibold"
+              className="text-2xl w-full p-3 py-4 tracking-wider font-lato-regular border-b border-l border-beige"
             >
               {linkName}
             </NavLink>
@@ -162,24 +132,13 @@ const Navbar = () => {
 
       {/* Cart Aside */}
       <aside
-        className={`w-[75%] sm:w-1/2 h-screen fixed top-0 bg-black text-white flex flex-col justify-center items-center px-8 ${cartAsideOpen ? "right-0 z-100" : "-right-full z-0"} transition-all overflow-auto`}
+        className={`w-[75%] sm:w-1/2 h-screen fixed top-0 bg-mehroon/50 text-beige flex flex-col justify-center items-center px-8 ${cartAsideOpen ? "right-0 z-100" : "-right-full z-0"} transition-all font-cinzel-bold`}
       >
-        <button className="absolute left-10 top-5" onClick={cartAsideHandler}>
-          <CircleX size={30} />
+        <button className="absolute left-5 top-5" onClick={cartAsideHandler}>
+          <X size={40} />
         </button>
-        <p className="text-4xl">No Items</p>
+        <p className="text-5xl">No Items</p>
       </aside>
-
-      {/* WishList Box */}
-
-      <div
-        className={`w-full sm:w-160 min-h-62.5 fixed left-1/2 top-1/2 -translate-1/2 bg-black text-white flex flex-col justify-center items-center px-8 ${wishListBoxOpen ? "opacity-100 z-100" : "opacity-0 z-0 hidden"} transition-all overflow-auto`}
-      >
-        <button className="absolute right-3 top-3" onClick={wishListBoxHandler}>
-          <CircleX size={20} />
-        </button>
-        <p className="text-4xl">No Items</p>
-      </div>
     </>
   );
 };

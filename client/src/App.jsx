@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "swiper/css";
+import Lenis from "lenis";
 import Home from "./Pages/Home";
 import Sign_Up from "./Pages/Sign_Up";
 import Log_In from "./Pages/Log_In";
@@ -56,6 +57,12 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+  const lenis = new Lenis({
+    autoRaf: true,
+  });
+  lenis.on("scroll", (e) => {
+    console.log(e);
+  });
   return <RouterProvider router={router} />;
 };
 

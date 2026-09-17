@@ -1,23 +1,21 @@
 @import "tailwindcss";
+
 * {
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-  padding-right: 0% !important;
-}
-
+html,
 body {
   width: 100%;
-  margin: 0;
-  background: #ffffff;
-  color: #222;
-  font-family: "Cinzel", serif;
-  user-select: none;
+  height: 100%;
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+  -moz-user-select: none !important;
+  background-color: #e1dcc9;
 }
 
-button {
+button,
+svg {
   cursor: pointer;
 }
 
@@ -27,39 +25,62 @@ button {
 }
 
 @font-face {
-  font-family: "Cinzel-SemiBold";
-  src: url("./assets/Fonts/Cinzel/Cinzel-SemiBold.ttf") format("truetype");
-}
-
-@font-face {
   font-family: "Cinzel-Bold";
   src: url("./assets/Fonts/Cinzel/Cinzel-Bold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Cinzel-ExtraBold";
-  src: url("./assets/Fonts/Cinzel/Cinzel-ExtraBold.ttf") format("truetype");
+  font-family: "Lato-Thin";
+  src: url("./assets/Fonts/Lato-Thin.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Lato-Light";
+  src: url("./assets/Fonts/Lato-Light.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Lato-Regular";
+  src: url("./assets/Fonts/Lato-Regular.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Poppins-Light";
-  src: url("./assets/Fonts/Poppins-Light.ttf") format("truetype");
+  font-family: "PlayFair-Regular";
+  src: url("./assets/Fonts/Playfair-Regular.ttf") format("truetype");
 }
+
 @font-face {
-  font-family: "Poppins-Regular";
-  src: url("./assets/Fonts/Poppins-Regular.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Poppins-Bold";
-  src: url("./assets/Fonts/Poppins-Bold.ttf") format("truetype");
+  font-family: "PlayFair-Bold";
+  src: url("./assets/Fonts/Playfair-Bold.ttf") format("truetype");
 }
 
 @theme {
   --font-cinzel-regular: "Cinzel-Regular";
-  --font-cinzel-semibold: "Cinzel-SemiBold";
   --font-cinzel-bold: "Cinzel-Bold";
-  --font-cinzel-extrabold: "Cinzel-ExtraBold";
-  --font-poppins-light: "Poppins-Light";
-  --font-poppins-regular: "Poppins-Regular";
-  --font-poppins-bold: "Poppins-Bold";
+  --font-lato-thin: "Lato-Thin";
+  --font-lato-light: "Lato-Light";
+  --font-lato-regular: "Lato-Regular";
+  --font-playfair-regular: "PlayFair-Regular";
+  --font-playfair-bold: "PlayFair-Bold";
+  --color-beige: #e1dcc9;
+  --color-brown: #412d15;
+  --color-dark: #0c0c0c;
+  --color-mehroon: #1f150c;
+  --breakpoint-end: 800px;
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 13px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e1dcc9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f150c;
 }

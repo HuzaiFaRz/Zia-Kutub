@@ -1,8 +1,11 @@
+import { useState } from "react";
 
 const Add_Product = () => {
-  return (
-    <div>Add_Product</div>
-  )
-}
+  const [first, setfirst] = useState(true);
 
-export default Add_Product
+  return (
+    <div className="w-full"></div>
+  );
+};
+
+export default Add_Product;
