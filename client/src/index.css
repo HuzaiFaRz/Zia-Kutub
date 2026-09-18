@@ -11,7 +11,11 @@ body {
   user-select: none !important;
   -webkit-user-drag: none !important;
   -moz-user-select: none !important;
-  background-color: #e1dcc9;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
 }
 
 button,
@@ -74,7 +78,7 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 ::-webkit-scrollbar {
-  width: 13px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -82,5 +86,5 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1f150c;
+  background: #412d15;
 }

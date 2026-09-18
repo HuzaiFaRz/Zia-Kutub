@@ -6,7 +6,7 @@ import { Eye, EyeOff, LoaderCircle, MailBadge } from "lucide-react";
 
 const Sign_Up = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [msg, setMsg] = useState(["Salam! Kese hain Ap", true]);
+  const [msg, setMsg] = useState(["Hello!", true]);
   const [loading, setLoading] = useState(false);
   const [signupForm, setSignupForm] = useState({
     name: "",
@@ -68,38 +68,42 @@ const Sign_Up = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+    <div className="min-h-screen flex items-center justify-center bg-beige p-4">
+      <div className="w-full max-w-125 bg-mehroon rounded-2xl shadow-lg p-8">
         {/* Heading */}
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800">
+        <div className="text-center mb-6 text-beige">
+          <h2 className="text-3xl font-bold font-playfair-bold">
             Create an Account
           </h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-beige/70 mt-1 font-lato-regular">
             Sign up to get started with Zia-Kutub
           </p>
         </div>
 
         {/* Error Message Display Example */}
         <div
-          className={`mb-4 p-3 border ${msg[1] ? "bg-green-50 border-green-400 text-green-400" : "bg-red-50 border-red-400 text-red-700"} text-sm rounded-lg`}
+          className={`mb-4 p-3 text-lg font-cinzel-bold border bg-beige text-mehroon`}
         >
           {msg[0]}
         </div>
 
         {/* Form Fields */}
-        <form className="space-y-4" onSubmit={signup_Handler}>
+        <form className="space-y-6" onSubmit={signup_Handler}>
           {/* Name Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              className="block text-sm font-medium text-beige/70 mb-1"
+              htmlFor="name"
+            >
               Full Name
             </label>
             <input
               disabled={loading}
               type="text"
               placeholder="John Doe"
+              id="name"
               name="name"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none border-gray-300"
+              className="w-full px-4 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
               onChange={signup_input_Handler}
               required
             />
@@ -107,15 +111,19 @@ const Sign_Up = () => {
 
           {/* Email Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-beige/70 mb-1"
+            >
               Email Address
             </label>
             <input
               disabled={loading}
               type="email"
               placeholder="example@gmail.com"
+              id="email"
               name="email"
-              className="w-full font-mono px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none border-gray-300"
+              className="w-full px-4 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
               onChange={signup_input_Handler}
               required
             />
@@ -123,7 +131,10 @@ const Sign_Up = () => {
 
           {/* Password Field with Eye Toggle */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-beige/70 mb-1"
+            >
               Password
             </label>
             <div className="relative">
@@ -131,8 +142,9 @@ const Sign_Up = () => {
                 disabled={loading}
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
+                id="password"
                 name="password"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none border-gray-300 pr-10"
+                className="w-full px-4 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
                 onChange={signup_input_Handler}
                 required
               />
@@ -140,7 +152,7 @@ const Sign_Up = () => {
                 disabled={loading}
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-beige/60 hover:text-beige/70 focus:outline-none"
               >
                 {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
               </button>
@@ -151,9 +163,10 @@ const Sign_Up = () => {
           <button
             disabled={loading}
             type="submit"
-            className="w-full mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition duration-200 flex justify-center items-center gap-4"
+            className="w-full bg-beige text-mehroon font-playfair-bold font-extrabold py-2 text-lg sm:text-xl flex items-center justify-center gap-3"
           >
-            {loading ? "Please Wait" : "Sign Up"}
+            <span>{loading ? "Please Wait" : "Sign Up"}</span>
+
             {loading ? (
               <LoaderCircle size={20} className="animate-spin" />
             ) : (
@@ -163,11 +176,11 @@ const Sign_Up = () => {
         </form>
 
         {/* Footer Link */}
-        <p className="text-center text-sm text-gray-600 mt-6">
+        <p className="text-center text-sm text-beige/60 mt-6">
           Already have an account?{" "}
           <NavLink
             to={"/login"}
-            className="text-indigo-600 font-medium hover:underline"
+            className="text-beige font-medium hover:underline"
           >
             Log In
           </NavLink>

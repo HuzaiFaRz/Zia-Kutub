@@ -5,7 +5,7 @@ import { Eye, EyeOff, LoaderCircle, UserKey } from "lucide-react";
 
 const Log_In = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [msg, setMsg] = useState(["Salam! Kese hain Ap", true]);
+  const [msg, setMsg] = useState(["Hello!", true]);
   const [loading, setLoading] = useState(false);
   const [loginForm, setLoginForm] = useState({
     email: "",
@@ -51,60 +51,68 @@ const Log_In = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+    <div className="min-h-screen flex items-center justify-center bg-beige p-4">
+      <div className="w-full max-w-125 bg-mehroon rounded-2xl shadow-lg p-8">
         {/* Heading */}
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
-          <p className="text-sm text-gray-500 mt-1">
+        <div className="text-center mb-6 text-beige">
+          <h2 className="text-3xl font-bold font-playfair-bold">
+            Welcome Back
+          </h2>
+          <p className="text-sm text-beige/70 mt-1 font-lato-regular">
             Sign in to access your account
           </p>
         </div>
 
         {/* Error Message Display */}
         <div
-          className={`mb-4 p-3 border ${msg[1] ? "bg-green-50 border-green-400 text-green-400" : "bg-red-50 border-red-400 text-red-700"} text-sm rounded-lg`}
+          className={`mb-4 p-3 text-lg font-cinzel-bold border bg-beige text-mehroon`}
         >
           {msg[0]}
         </div>
 
         {/* Form Fields */}
-        <form className="space-y-4" onSubmit={login_Handler}>
+        <form
+          className="space-y-4 flex flex-col gap-5"
+          onSubmit={login_Handler}
+        >
           {/* Email Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="flex flex-col justify-center items-start mb-1 w-full">
+            <label
+              className="block text-sm font-medium text-beige/70 mb-1"
+              htmlFor="email"
+            >
               Email Address
             </label>
             <input
               disabled={loading}
               type="email"
               placeholder="example@gmail.com"
+              id="email"
               name="email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono"
+              className="w-full px-4 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
               onChange={login_input_Handler}
-              // required
+              required
             />
           </div>
 
-          {/* Password Field with Eye Toggle */}
-          <div>
-            <div className="flex justify-between items-center mb-1">
-              <label className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              {/* <a href="#" className="text-xs text-indigo-600 hover:underline">
-                Forgot password?
-              </a> */}
-            </div>
-            <div className="relative">
+          <div className="flex flex-col justify-center items-start mb-1 w-full">
+            <label
+              className="block text-sm font-medium text-beige/70 mb-1"
+              htmlFor="password"
+            >
+              Password
+            </label>
+
+            <div className="relative w-full">
               <input
                 disabled={loading}
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
+                id="password"
                 name="password"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none pr-10"
+                className="w-full px-4 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
                 onChange={login_input_Handler}
-                // required
+                required
               />
               <button
                 disabled={loading}
@@ -121,9 +129,10 @@ const Log_In = () => {
           <button
             disabled={loading}
             type="submit"
-            className="w-full mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition duration-200 flex justify-center items-center gap-4"
+            className="w-full bg-beige text-mehroon font-playfair-bold font-extrabold py-2 text-lg sm:text-xl flex items-center justify-center gap-3"
           >
-            {loading ? "Please Wait" : "Log in"}
+            <span> {loading ? "Please Wait" : "Log in"}</span>
+
             {loading ? (
               <LoaderCircle size={20} className="animate-spin" />
             ) : (
@@ -133,11 +142,11 @@ const Log_In = () => {
         </form>
 
         {/* Footer Link */}
-        <p className="text-center text-sm text-gray-600 mt-6">
+        <p className="text-center text-sm text-beige/60 mt-6">
           Don't have an account?{" "}
           <NavLink
-            to={"/signup"}
-            className="text-indigo-600 font-medium hover:underline"
+            to={"/sign-up"}
+            className="text-beige font-medium hover:underline"
           >
             Sign Up
           </NavLink>

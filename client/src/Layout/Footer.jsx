@@ -6,7 +6,7 @@ import whatsapp_icon from "/src/assets/Images/whatsapp.png";
 
 const Footer = () => {
   return (
-    <footer className="w-full p-2 xl:p-3 z-10 bg-beige">
+    <footer className="w-full h-auto p-2 xl:p-3 z-10 bg-beige">
       <div className="bg-mehroon w-full h-auto px-6 lg:px-10 xl:px-16 rounded-t-4xl shadow-2xl py-6 gap-10">
         <div className="w-full flex flex-wrap justify-between items-center gap-5 sm:gap-0">
           <NavLink

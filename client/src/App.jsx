@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider, useLocation } from "react-router";
 import "swiper/css";
 import Lenis from "lenis";
 import Home from "./Pages/Home";
@@ -19,6 +19,7 @@ import Orders from "./Admin/Orders";
 import Add_Product from "./Admin/Add_Product";
 import Products from "./Admin/Products";
 import Edit_Product from "./Admin/Edit_Product";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -27,12 +28,13 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "/product/:id", element: <Product_Details /> },
-      { path: "/aboutus", element: <About_Us /> },
-      { path: "/qurankareem", element: <Quran_Kareem /> },
-      { path: "/prayermat", element: <Prayer_Mat /> },
+      { path: "/about-us", element: <About_Us /> },
+      { path: "/dashboard", element: <About_Us /> },
+      { path: "/quran-kareem", element: <Quran_Kareem /> },
+      { path: "/prayer-mat", element: <Prayer_Mat /> },
       { path: "/koofi", element: <Koofi /> },
       { path: "/books", element: <Books /> },
-      { path: "/fragranceoil", element: <Fragrance_Oil /> },
+      { path: "/fragrance-oil", element: <Fragrance_Oil /> },
       { path: "/accessories", element: <Accessories /> },
     ],
   },
@@ -52,7 +54,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  { path: "/signup", element: <Sign_Up /> },
+  { path: "/sign-up", element: <Sign_Up /> },
   { path: "/login", element: <Log_In /> },
 ]);
 
@@ -60,9 +62,8 @@ const App = () => {
   const lenis = new Lenis({
     autoRaf: true,
   });
-  lenis.on("scroll", (e) => {
-    console.log(e);
-  });
+  lenis.on("scroll");
+
   return <RouterProvider router={router} />;
 };
 
