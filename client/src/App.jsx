@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, useLocation } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import "swiper/css";
 import Lenis from "lenis";
 import Home from "./Pages/Home";
@@ -7,19 +7,17 @@ import Log_In from "./Pages/Log_In";
 import Product_Details from "./Pages/Product_Details";
 import Layout from "./Layout/Layout";
 import About_Us from "./Pages/About_Us";
-
-import Quran_Kareem from "./Pages/Quran_Kareem";
-import Prayer_Mat from "./Pages/Prayer_Mat";
-import Koofi from "./Pages/Koofi";
-import Books from "./Pages/Books";
-import Fragrance_Oil from "./Pages/Fragrance_Oil";
-import Accessories from "./Pages/Accessories";
 import Admin_Dashboard from "./Admin/Admin_Dashboard";
 import Orders from "./Admin/Orders";
 import Add_Product from "./Admin/Add_Product";
 import Products from "./Admin/Products";
 import Edit_Product from "./Admin/Edit_Product";
-import { useEffect } from "react";
+import Products_By_Category from "./Pages/Products_By_Category";
+import Dashboard from "./Pages/Dashboard";
+import Contact_Us from "./Pages/Contact_Us";
+import Privacy_Policy from "./Pages/Privacy_Policy";
+import Terms_Condition from "./Pages/Terms_Condition";
+import Products_Wrapper from "./Pages/Products_Wrapper";
 
 const router = createBrowserRouter([
   {
@@ -27,20 +25,21 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
-      { path: "/product/:id", element: <Product_Details /> },
-      { path: "/about-us", element: <About_Us /> },
-      { path: "/dashboard", element: <About_Us /> },
-      { path: "/quran-kareem", element: <Quran_Kareem /> },
-      { path: "/prayer-mat", element: <Prayer_Mat /> },
-      { path: "/koofi", element: <Koofi /> },
-      { path: "/books", element: <Books /> },
-      { path: "/fragrance-oil", element: <Fragrance_Oil /> },
-      { path: "/accessories", element: <Accessories /> },
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "about-us", element: <About_Us /> },
+      { path: "contact-us", element: <Contact_Us /> },
+      { path: "privacy-policy", element: <Privacy_Policy /> },
+      { path: "terms-condition", element: <Terms_Condition /> },
+
+      {
+        path: "products/:param",
+        element: <Products_Wrapper />,
+      },
     ],
   },
 
   {
-    path: "/admin",
+    path: "admin",
     element: <Admin_Dashboard />,
 
     children: [
@@ -54,8 +53,8 @@ const router = createBrowserRouter([
     ],
   },
 
-  { path: "/sign-up", element: <Sign_Up /> },
-  { path: "/login", element: <Log_In /> },
+  { path: "sign-up", element: <Sign_Up /> },
+  { path: "login", element: <Log_In /> },
 ]);
 
 const App = () => {

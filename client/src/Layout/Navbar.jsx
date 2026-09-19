@@ -22,6 +22,26 @@ import {
 } from "lucide-react";
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import Lenis from "lenis";
+
+export const otherPagesLinks = [
+  {
+    linkName: "Contact Us",
+    linkURL: "/contact-us",
+  },
+  {
+    linkName: "About Us",
+    linkURL: "/about-us",
+  },
+  {
+    linkName: "Privacy & Policy",
+    linkURL: "/privacy-policy",
+  },
+  {
+    linkName: "Terms & Condition",
+    linkURL: "/terms-condition",
+  },
+];
 
 const Navbar = () => {
   const [headerAsideOpen, setHeaderAsideOpen] = useState(false);
@@ -70,24 +90,44 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    const lenis = new Lenis();
     document.body.style.overflow =
       headerAsideOpen || cartAsideOpen ? "hidden" : "auto";
-  });
+    headerAsideOpen || cartAsideOpen ? lenis.start() : lenis.start();
+  }, [headerAsideOpen, cartAsideOpen]);
 
-  const navLinks = [
-    { linkName: "Quran Kareem", linkURL: "quran-kareem" },
-    { linkName: "Prayer Mat", linkURL: "prayer-mat" },
-    { linkName: "Koofi", linkURL: "koofi" },
-    { linkName: "Books", linkURL: "books" },
-    { linkName: "Fragrance Oil", linkURL: "fragrance-oil" },
-    { linkName: "Accessories", linkURL: "accessories" },
+  const productsLinks = [
+    {
+      linkName: "Quran Kareem",
+      linkURL: "/products/quran-kareem",
+    },
+    {
+      linkName: "Prayer Mat",
+      linkURL: "/products/prayer-mat",
+    },
+    {
+      linkName: "Koofi",
+      linkURL: "/products/koofi",
+    },
+    {
+      linkName: "Books",
+      linkURL: "/products/books",
+    },
+    {
+      linkName: "Fragrance Oil",
+      linkURL: "/products/fragrance-oil",
+    },
+    {
+      linkName: "Accessories",
+      linkURL: "/products/accessories",
+    },
   ];
 
   return (
     <>
       <header className="w-full p-2 xl:p-3 fixed top-0 z-10 bg-beige">
         <nav className="bg-mehroon w-full h-auto px-6 lg:px-10 xl:px-16 py-4 rounded-t-4xl shadow-2xl flex flex-col gap-10">
-          <div className="w-full flex flex-wrap justify-between items-start gap-5 sm:gap-0">
+          <div className="w-full flex flex-wrap justify-between items-center gap-5 sm:gap-0">
             <NavLink
               to={"/"}
               className="font-playfair-bold text-beige underline underline-offset-4 text-3xl lg:text-4xl cursor-pointer"
@@ -109,11 +149,16 @@ const Navbar = () => {
               </button>
             </form>
 
-            <div className="flex gap-3 text-beige sm:ml-4 order-2 sm:order-3">
+            <div className="flex items-center gap-3 text-beige sm:ml-4 order-2 sm:order-3">
+              <Logs
+                className="size-7 lg:size-10 flex md:hidden"
+                onClick={headerAsideHandler}
+              />
+
               <Menu as="div" className="relative inline-block">
                 {/* User Button */}
                 <MenuButton className="text-beige">
-                  <User size={35} strokeWidth={1.7} />
+                  <User className="size-7 lg:size-10" />
                 </MenuButton>
 
                 {/* Dropdown */}
@@ -166,54 +211,41 @@ const Navbar = () => {
               </Menu>
 
               <button className="relative" onClick={cartAsideHandler}>
-                <Handbag size={35} />
-                <span className="absolute bg-brown text-sm rounded-full w-6.25 h-6.25 flex items-center justify-center -top-2 -right-3">
+                <Handbag className="size-7 lg:size-10" />
+                <span className="absolute bg-brown text-xs rounded-full w-6.25 h-6.25 flex items-center justify-center -top-2 -right-3">
                   {cartItems.length}
                 </span>
               </button>
             </div>
           </div>
-          <div className="w-full flex flex-wrap justify-between items-center text-beige">
-            <Logs
-              size={35}
-              onClick={headerAsideHandler}
-              className="flex end:hidden"
-            />
-
-            <div className="hidden end:flex gap-3 lg:gap-5 xl:gap-8 items-center font-lato-regular">
-              {navLinks.map((link, ind) => {
-                const { linkName, linkURL } = link;
-                return (
-                  <NavLink
-                    key={ind}
-                    to={linkURL}
-                    className="text-sm lg:text-lg p-2 tracking-wider"
-                  >
-                    {linkName}
-                  </NavLink>
-                );
-              })}
-            </div>
-            <div className="flex gap-2">
-              <a
-                href="https://wa.me/+923083362107?text=Assalamualaikum! Can I Get More Info About your Store"
-                target="_blank"
-                className="flex items-center gap-2  bg-brown text-beige font-cinzel-bold px-3 lg:px-5 p-2 rounded-r-4xl"
-              >
-                <MessageCircle className="size-4 lg:size-6" />
-                <span className="text-sm lg:text-lg">Contact Us</span>
-              </a>
-              <NavLink
-                to={"about-us"}
-                className="flex items-center gap-2  bg-brown text-beige font-cinzel-bold px-3 lg:px-5 p-2 rounded-r-4xl"
-              >
-                <Info className="size-4 lg:size-6" />
-                <span className="text-sm lg:text-lg">About us</span>
-              </NavLink>
-            </div>
+          <div className="w-full hidden md:flex justify-evenly items-center text-beige text-sm lg:text-lg">
+            {productsLinks.map((link, ind) => {
+              const { linkName, linkURL } = link;
+              return (
+                <NavLink
+                  key={ind}
+                  to={linkURL}
+                  className={"hover:scale-105 transition-transform"}
+                >
+                  {linkName}
+                </NavLink>
+              );
+            })}
+            {/* {otherPagesLinks.map((link, ind) => {
+              const { linkName, linkURL } = link;
+              return (
+                <NavLink key={ind} to={linkURL} className="">
+                  {linkName}
+                </NavLink>
+              );
+            })} */}
           </div>
         </nav>
       </header>
+
+      <a href="" className="w-[80px] h-[80px] absolute">
+        222
+      </a>
 
       {/* Asides Overlay */}
       <div
@@ -223,59 +255,68 @@ const Navbar = () => {
 
       {/* Header Aside */}
       <aside
-        className={`w-[75%] sm:w-1/2 h-screen fixed top-0 bg-beige text-mehroon flex flex-col justify-between items-center ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all`}
+        className={`w-[75%] sm:w-1/2 h-full overflow-auto fixed top-0 bg-mehroon text-beige flex flex-col justify-between items-center ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all`}
       >
-        <div className="w-full p-2 flex justify-between items-center">
-          <h1 className="font-playfair-bold text-4xl font-extrabold underline">
-            Products
-          </h1>
+        <button
+          className="absolute top-2 right-2 w-7 sm:w-10 h-7 sm:h-10 flex justify-center items-center text-beige bg-mehroon rounded-full"
+          onClick={headerAsideHandler}
+        >
+          <X className="size-4 sm:size-6" />
+        </button>
 
-          <button
-            className="w-10 h-10 flex justify-center items-center text-beige bg-mehroon rounded-full"
-            onClick={headerAsideHandler}
-          >
-            <X size={23} />
-          </button>
-        </div>
-        <div className="w-full flex flex-col gap-5">
-          {navLinks.map((link, ind) => {
+        <div className="flex flex-col items-start justify-start w-full px-3 gap-5 mt-5 p-3">
+          <h1 className="font-cinzel-bold text-2xl font-extrabold">PRODUCTS</h1>
+          {productsLinks.map((link, ind) => {
             const { linkName, linkURL } = link;
             return (
               <NavLink
                 key={ind}
                 to={linkURL}
-                className="bg-mehroon text-beige font-playfair-regular text-2xl w-full p-3 py-4 tracking-wider"
+                className="bg-brown text-beige font-playfair-regular text-lg py-2 px-4 rounded-3xl tracking-wider"
+              >
+                {linkName}
+              </NavLink>
+            );
+          })}
+
+          <h1 className="font-cinzel-bold text-2xl font-extrabold">Other</h1>
+          {otherPagesLinks.map((link, ind) => {
+            const { linkName, linkURL } = link;
+            return (
+              <NavLink
+                key={ind}
+                to={linkURL}
+                className="bg-brown text-beige font-playfair-regular text-lg py-2 px-4 rounded-3xl tracking-wider"
               >
                 {linkName}
               </NavLink>
             );
           })}
         </div>
-        <p></p>
       </aside>
 
       {/* Cart Aside */}
       <aside
-        className={`w-full h-screen fixed top-0 p-3 bg-beige flex flex-col justify-between items-center ${cartAsideOpen ? "right-0 z-100" : "-right-full z-0"} transition-all font-cinzel-bold overflow-auto`}
+        className={`w-full data-lenis-prevent h-full overflow-y-auto overscroll-contain fixed top-0 p-3 bg-beige flex flex-col justify-between items-center ${cartAsideOpen ? "right-0 z-100" : "-right-full z-0"} transition-all font-cinzel-bold`}
       >
         <div className="w-full p-1 flex gap-2 items-center">
           <button
-            className="w-10 h-10 flex justify-center items-center text-beige bg-mehroon rounded-full"
+            className="w-7 sm:w-10 h-7 sm:h-10 flex justify-center items-center text-beige bg-mehroon rounded-full"
             onClick={cartAsideHandler}
           >
-            <X size={23} />
+            <X className="size-4 sm:size-6" />
           </button>
-          <h1 className="font-cinzel-bold text-2xl sm:text-4xl font-extrabold">
+          <h1 className="font-cinzel-bold text-lg sm:text-xl md:text-4xl font-extrabold">
             YOUR SHOPPING CART
           </h1>
         </div>
 
         {cartItems.length !== 0 ? (
-          <div className="w-full flex flex-col justify-start items-start gap-3 p-1 text-beige mt-5">
-            <div className="font-lato-regular w-full rounded-2xl p-5 flex justify-between items-center border-brown bg-mehroon">
+          <div className="w-full flex flex-col justify-start items-start gap-3 p-0 sm:p-1 text-beige mt-5">
+            <div className="font-lato-regular w-full rounded-2xl p-3 sm:p-5 flex justify-between items-center border-brown bg-mehroon text-xs sm:text-sm">
               <span>Showing {cartItems.length} items in your Cart.</span>
               <button className="text-red-400 flex items-center gap-1 hover:text-red-300">
-                <Trash size={22} />
+                <Trash className="size-4 sm:size-5" />
                 <span>Empty Cart</span>
               </button>
             </div>
@@ -293,7 +334,7 @@ const Navbar = () => {
               } = elem;
               return (
                 <div
-                  className="w-full font-lato-regular flex flex-wrap justify-center sm:justify-between items-center gap-3 bg-mehroon p-3 border border-beige relative transition-all rounded-2xl hover:shadow-2xl"
+                  className="w-full font-lato-regular flex flex-wrap justify-start sm:justify-between items-center gap-3 bg-mehroon p-2 sm:p-3 px-4 sm:px-8 border border-beige relative transition-all rounded-2xl hover:shadow-2xl"
                   key={product_id}
                   id={cart_item_id}
                 >
@@ -303,12 +344,12 @@ const Navbar = () => {
                       alt={image.url}
                       className="w-24 h-24 object-cover rounded-2xl"
                     />
-                    <div className="flex flex-col gap-1">
-                      <p className="p-1 text-beige/80 text-sm">{brand}</p>
-                      <h1 className="font-bold text-sm sm:text-lg">{title}</h1>
-                      <div className="text-beige/80">
+                    <div className="flex flex-col gap-1 text-xs sm:text-lg">
+                      <p className="p-1 text-beige/80">{brand}</p>
+                      <h1 className="font-bold">{title}</h1>
+                      <div className="text-beige/80 mt-2">
                         Color:
-                        <span className="ml-2 p-1 bg-black text-xs border text-beige">
+                        <span className="ml-2 p-1 bg-black border text-beige text-[8px] sm:text-xs">
                           {color}
                         </span>
                       </div>
@@ -318,13 +359,13 @@ const Navbar = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex justify-center items-center gap-10">
-                    <div className="bg-black flex items-center justify-between gap-5 py-2 px-5 rounded-lg border-beige/50 border mr-5">
+                  <div className="flex justify-end lg:justify-center items-center gap-10 w-full lg:w-auto text-xs sm:text-lg">
+                    <div className="bg-black flex items-center justify-between py-1 sm:py-2 px-3 sm:px-5 gap-5 rounded-lg border-beige/50 border mr-3 sm:mr-5">
                       <Minus size={20} />
                       <span>1</span>
                       <Plus size={20} />
                     </div>
-                    <div className="flex flex-col items-end">
+                    <div className="flex flex-col items-start sm:items-end">
                       <span className="text-beige/60">Total</span>
                       <span className="-mt-1">
                         {price.currency}. {price.amount * quantity}
@@ -337,7 +378,7 @@ const Navbar = () => {
             })}
           </div>
         ) : (
-          <div className="min-w-[400px] bg-mehroon text-beige rounded-2xl border border-beige/50 flex flex-col justify-center items-center gap-3 p-5 font-lato-regular">
+          <div className="w-full sm:min-w-100 bg-mehroon text-beige rounded-2xl border border-beige/50 flex flex-col justify-center items-center gap-3 p-5 font-lato-regular">
             <Handbag
               className="bg-beige p-2  rounded-full text-mehroon"
               size={50}
@@ -352,45 +393,45 @@ const Navbar = () => {
           </div>
         )}
 
-        <div className="w-full bg-mehroon text-beige rounded-2xl border border-beige/50 flex flex-col gap-3 p-2 font-lato-regular">
+        <div className="w-full mt-5 bg-mehroon text-beige rounded-2xl border border-beige/50 flex flex-col gap-3 p-2 font-lato-regular">
           <div className="flex justify-between items-center border-b border-beige/20 p-4">
-            <h1 className="font-cinzel-bold text-2xl">ORDER SUMMARY</h1>
+            <h1 className="font-cinzel-bold text-lg sm:text-2xl">
+              ORDER SUMMARY
+            </h1>
             <BookText />
           </div>
-          <div className="flex flex-col gap-1 border-b border-beige/20 p-4 text-lg">
+          <div className="flex flex-col gap-1 border-b border-beige/20 p-4 text-sm sm:text-lg">
             <div className="flex justify-between items-center">
-              <span className=" text-beige/60">Subtotal</span>
-              <span className=" text-beige">Rs. 0</span>
+              <span className="text-beige/60">Subtotal</span>
+              <span className="text-beige">Rs. 0</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className=" text-beige/60">Shipping Fee</span>
-              <span className=" text-beige">Rs. 0</span>
+              <span className="text-beige/60">Shipping Fee</span>
+              <span className="text-beige">Rs. 0</span>
             </div>
           </div>
-          <div className="flex flex-col gap-3 border-b border-beige/20 p-4 text-lg">
+          <div className="flex flex-col gap-3 border-b border-beige/20 p-4 text-sm sm:text-lg">
             <div className="flex justify-between items-center">
               <span className="text-beige/60">Total (PKR)</span>
               <div className="flex flex-col items-end">
-                <span className="font-playfair-bold text-2xl sm:text-4xl">
-                  RS.0
-                </span>
-                <span className="text-sm text-beige/60">
+                <span className="text-xl sm:text-4xl">RS.0</span>
+                <span className="text-xs sm:text-sm text-beige/60">
                   Includes all applicable taxes
                 </span>
               </div>
             </div>
-            <button className="w-full bg-beige text-mehroon font-playfair-bold font-extrabold py-2 text-lg sm:text-xl flex items-center justify-center gap-3">
+            <button className="w-full bg-beige text-mehroon font-playfair-bold font-extrabold py-2 text-xs  sm:text-lg md:text-xl flex items-center justify-center gap-3">
               <span>PROCEED TO CHECKOUT</span>
               <MoveRight />
             </button>
           </div>
-          <div className="flex justify-between border-b border-beige/20 p-4 text-lg">
-            <div className="text-sm text-beige/60 flex items-center gap-1">
-              <Car />
+          <div className="flex justify-between sm:justify-evenly p-2 text-xs sm:text-sm text-beige/60">
+            <div className="flex items-center gap-1">
+              <Car className="size-5 sm:size-7" />
               <span> Fast Delivery (2-4 Days)</span>
             </div>
-            <div className="text-sm text-beige/60 flex items-center gap-1">
-              <Banknote />
+            <div className="flex items-center gap-1">
+              <Banknote className="size-5 sm:size-7" />
               <span> Cash on Delivery</span>
             </div>
           </div>
