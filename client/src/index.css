@@ -90,3 +90,29 @@ input[type="search"]::-webkit-search-results-decoration {
 ::-webkit-scrollbar-thumb {
   background: #412d15;
 }
+
+.footerLink {
+  z-index: 1;
+}
+
+.footerLink:hover {
+  transition: all 0.2s ease-in-out;
+  color: #412d15 !important;
+}
+
+.footerLink::before {
+  transition: all 0.2s ease-in-out;
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: -100%;
+  left: 0;
+  z-index: -1;
+  background-color: #e1dcc9;
+}
+
+.footerLink:hover::before {
+  transition: all 0.2s ease-in-out;
+  bottom: 0;
+}

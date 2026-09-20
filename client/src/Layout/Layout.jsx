@@ -21,7 +21,7 @@ const Layout = () => {
   }, [pageLocation]);
 
   return (
-    <main className="w-full min-h-screen bg-beige relative p-1">
+    <main className="w-full min-h-screen bg-beige relative p-1 pt-[150px] sm:pt-[80px] md:pt-[180px]">
       <Navbar />
       <Outlet />
       <Footer />

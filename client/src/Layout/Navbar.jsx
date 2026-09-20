@@ -23,7 +23,11 @@ import {
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
-export const otherPagesLinks = [
+export const otherPagesLinks1 = [
+  {
+    linkName: "Orders",
+    linkURL: "/orders",
+  },
   {
     linkName: "Contact Us",
     linkURL: "/contact-us",
@@ -32,6 +36,13 @@ export const otherPagesLinks = [
     linkName: "About Us",
     linkURL: "/about-us",
   },
+];
+
+export const otherPagesLinks2 = [
+  {
+    linkName: "FAQ's",
+    linkURL: "/faqs",
+  },
   {
     linkName: "Privacy & Policy",
     linkURL: "/privacy-policy",
@@ -39,6 +50,10 @@ export const otherPagesLinks = [
   {
     linkName: "Terms & Condition",
     linkURL: "/terms-condition",
+  },
+  {
+    linkName: "Return & Exchange",
+    linkURL: "/return-exchange",
   },
 ];
 
@@ -80,6 +95,8 @@ const Navbar = () => {
       },
     },
   ]);
+
+  const allLinks = [...otherPagesLinks1, ...otherPagesLinks2];
 
   const headerAsideHandler = () => {
     setHeaderAsideOpen(!headerAsideOpen);
@@ -124,13 +141,14 @@ const Navbar = () => {
   return (
     <>
       <header className="w-full p-2 xl:p-3 fixed top-0 z-10 bg-beige">
-        <nav className="bg-mehroon w-full h-auto px-6 lg:px-10 xl:px-16 py-4 rounded-t-4xl shadow-2xl flex flex-col gap-10">
+        <nav className="bg-mehroon w-full h-auto px-6 lg:px-10 xl:px-16 py-4 rounded-t-4xl flex flex-col gap-10">
           <div className="w-full flex flex-wrap justify-between items-center gap-5 sm:gap-0">
             <NavLink
               to={"/"}
-              className="font-playfair-bold text-beige underline underline-offset-4 text-3xl lg:text-4xl cursor-pointer"
+              className="font-playfair-bold text-beige text-3xl lg:text-4xl cursor-pointer"
             >
               Zia Kutub
+              <div className="w-full h-px bg-linear-to-r from-transparent via-beige to-transparent mt-2"></div>
             </NavLink>
 
             <form className="relative text-beige w-full sm:w-auto sm:ml-auto sm:mr-4 order-3 sm:order-2">
@@ -147,7 +165,7 @@ const Navbar = () => {
               </button>
             </form>
 
-            <div className="flex items-center gap-3 text-beige sm:ml-4 order-2 sm:order-3">
+            <div className="flex items-center gap-3 text-beige sm:ml-4 order-2 sm:order-3 z-10">
               <Logs
                 className="size-7 lg:size-10 flex md:hidden"
                 onClick={headerAsideHandler}
@@ -162,7 +180,6 @@ const Navbar = () => {
                 {/* Dropdown */}
                 <MenuItems
                   modal={false}
-                  // anchor="bottom"
                   className={`absolute right-0 z-50 mt-3 w-52 origin-top-right rounded-xl border border-brown/20 bg-beige p-1 shadow-xl focus:outline-none`}
                 >
                   {false ? (
@@ -227,7 +244,9 @@ const Navbar = () => {
                 <NavLink
                   key={ind}
                   to={linkURL}
-                  className={"hover:scale-105 transition-transform"}
+                  className={
+                    "bg-brown text-beige p-1 px-5 rounded-4xl hover:scale-105 transition-transform"
+                  }
                 >
                   {linkName}
                 </NavLink>
@@ -236,10 +255,6 @@ const Navbar = () => {
           </div>
         </nav>
       </header>
-
-      <a href="" className="w-[80px] h-[80px] absolute">
-        222
-      </a>
 
       {/* Asides Overlay */}
       <div
@@ -250,38 +265,51 @@ const Navbar = () => {
       {/* Header Aside */}
       <aside
         data-lenis-prevent
-        className={`w-[75%] sm:w-1/2 h-full overflow-y-auto fixed top-0 bg-mehroon text-beige flex flex-col justify-between items-center ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all`}
+        className={`w-[75%] sm:w-1/2 h-full overflow-y-auto fixed top-0 bg-mehroon text-beige flex flex-col items-center ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all`}
       >
-        <button
-          className="absolute top-2 right-2 w-7 sm:w-10 h-7 sm:h-10 flex justify-center items-center text-beige bg-mehroon rounded-full"
-          onClick={headerAsideHandler}
-        >
-          <X className="size-4 sm:size-6" />
-        </button>
+        <div className="w-full flex justify-between items-center p-5">
+          <NavLink
+            to={"/"}
+            className="font-playfair-bold text-beige text-xl sm:text-3xl lg:text-4xl cursor-pointer"
+          >
+            Zia Kutub
+            <div className="w-full h-px bg-linear-to-r from-transparent via-beige to-transparent mt-2"></div>
+          </NavLink>
+          <button
+            className="w-7 sm:w-10 h-7 sm:h-10 flex justify-center items-center text-beige bg-mehroon rounded-full"
+            onClick={headerAsideHandler}
+          >
+            <X className="size-4 sm:size-6" />
+          </button>
+        </div>
 
-        <div className="flex flex-col items-start justify-start w-full px-3 gap-5 mt-5 p-3">
-          <h1 className="font-cinzel-bold text-2xl font-extrabold">PRODUCTS</h1>
+        <div className="flex flex-col items-start justify-center self-center justify-self-center  w-full px-3 gap-5 mt-5 p-3 font-lato-regular">
+          <h1 className="font-cinzel-bold text-2xl font-extrabold w-full text-center">
+            PRODUCTS
+          </h1>
           {productsLinks.map((link, ind) => {
             const { linkName, linkURL } = link;
             return (
               <NavLink
                 key={ind}
                 to={linkURL}
-                className="bg-brown text-beige font-playfair-regular text-lg py-2 px-4 rounded-3xl tracking-wider"
+                className="text-beige text-lg py-2 px-2 tracking-wider border-b w-full"
               >
                 {linkName}
               </NavLink>
             );
           })}
 
-          <h1 className="font-cinzel-bold text-2xl font-extrabold">Other</h1>
-          {otherPagesLinks.map((link, ind) => {
+          <h1 className="font-cinzel-bold text-2xl font-extrabold w-full text-center mt-5">
+            OTHERS
+          </h1>
+          {otherPagesLinks1.map((link, ind) => {
             const { linkName, linkURL } = link;
             return (
               <NavLink
                 key={ind}
                 to={linkURL}
-                className="bg-brown text-beige font-playfair-regular text-lg py-2 px-4 rounded-3xl tracking-wider"
+                className="text-beige text-lg py-2 px-2 tracking-wider border-b w-full"
               >
                 {linkName}
               </NavLink>

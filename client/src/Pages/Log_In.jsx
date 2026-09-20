@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router-dom";
 import api from "../api/axios";
-import { Eye, EyeOff, LoaderCircle, UserKey } from "lucide-react";
+import { Eye, EyeOff, LoaderCircle, Lock, Mail, UserKey } from "lucide-react";
 
 const Log_In = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,8 +51,8 @@ const Log_In = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-beige p-4">
-      <div className="w-full max-w-125 bg-mehroon rounded-2xl shadow-lg p-8">
+    <div className="h-full flex items-center justify-center p-2">
+      <div className="w-full max-w-125 bg-mehroon rounded-2xl shadow-lg p-5 sm:p-8">
         {/* Heading */}
         <div className="text-center mb-6 text-beige">
           <h2 className="text-3xl font-bold font-playfair-bold">
@@ -83,16 +83,21 @@ const Log_In = () => {
             >
               Email Address
             </label>
-            <input
-              disabled={loading}
-              type="email"
-              placeholder="example@gmail.com"
-              id="email"
-              name="email"
-              className="w-full px-4 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
-              onChange={login_input_Handler}
-              required
-            />
+
+            <div className="relative w-full">
+              <Mail className="absolute left-2 top-1/2 -translate-y-1/2 text-beige/80 size-6" />
+
+              <input
+                disabled={loading}
+                type="email"
+                placeholder="example@gmail.com"
+                id="email"
+                name="email"
+                className="w-full px-10 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
+                onChange={login_input_Handler}
+                required
+              />
+            </div>
           </div>
 
           <div className="flex flex-col justify-center items-start mb-1 w-full">
@@ -104,13 +109,14 @@ const Log_In = () => {
             </label>
 
             <div className="relative w-full">
+              <Lock className="absolute left-2 top-1/2 -translate-y-1/2 text-beige/80  size-6" />
               <input
                 disabled={loading}
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 id="password"
                 name="password"
-                className="w-full px-4 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
+                className="w-full px-10 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
                 onChange={login_input_Handler}
                 required
               />
@@ -144,10 +150,7 @@ const Log_In = () => {
         {/* Footer Link */}
         <p className="text-center text-sm text-beige/60 mt-6">
           Don't have an account?{" "}
-          <NavLink
-            to={"/sign-up"}
-            className="text-beige font-medium hover:underline"
-          >
+          <NavLink to={"/sign-up"} className="text-beige font-medium underline">
             Sign Up
           </NavLink>
         </p>

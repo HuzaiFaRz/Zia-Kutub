@@ -1,8 +1,16 @@
 import { useState } from "react";
 
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router-dom";
 import api from "../api/axios";
-import { Eye, EyeOff, LoaderCircle, MailBadge } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  IdCard,
+  LoaderCircle,
+  Lock,
+  Mail,
+  MailBadge,
+} from "lucide-react";
 
 const Sign_Up = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -68,8 +76,8 @@ const Sign_Up = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-beige p-4">
-      <div className="w-full max-w-125 bg-mehroon rounded-2xl shadow-lg p-8">
+    <div className="h-full flex items-center justify-center p-2">
+      <div className="w-full max-w-125 bg-mehroon rounded-2xl shadow-lg p-5 sm:p-8">
         {/* Heading */}
         <div className="text-center mb-6 text-beige">
           <h2 className="text-3xl font-bold font-playfair-bold">
@@ -97,16 +105,20 @@ const Sign_Up = () => {
             >
               Full Name
             </label>
-            <input
-              disabled={loading}
-              type="text"
-              placeholder="John Doe"
-              id="name"
-              name="name"
-              className="w-full px-4 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
-              onChange={signup_input_Handler}
-              required
-            />
+            <div className="relative w-full">
+              <IdCard className="absolute left-2 top-1/2 -translate-y-1/2 text-beige/80 size-6" />
+
+              <input
+                disabled={loading}
+                type="text"
+                placeholder="John Doe"
+                id="name"
+                name="name"
+                className="w-full px-10 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
+                onChange={signup_input_Handler}
+                required
+              />
+            </div>
           </div>
 
           {/* Email Field */}
@@ -117,16 +129,20 @@ const Sign_Up = () => {
             >
               Email Address
             </label>
-            <input
-              disabled={loading}
-              type="email"
-              placeholder="example@gmail.com"
-              id="email"
-              name="email"
-              className="w-full px-4 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
-              onChange={signup_input_Handler}
-              required
-            />
+
+            <div className="relative w-full">
+              <Mail className="absolute left-2 top-1/2 -translate-y-1/2 text-beige/80 size-6" />
+              <input
+                disabled={loading}
+                type="email"
+                placeholder="example@gmail.com"
+                id="email"
+                name="email"
+                className="w-full px-10 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
+                onChange={signup_input_Handler}
+                required
+              />
+            </div>
           </div>
 
           {/* Password Field with Eye Toggle */}
@@ -138,13 +154,15 @@ const Sign_Up = () => {
               Password
             </label>
             <div className="relative">
+              <Lock className="absolute left-2 top-1/2 -translate-y-1/2 text-beige/80 size-6" />
+
               <input
                 disabled={loading}
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 id="password"
                 name="password"
-                className="w-full px-4 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
+                className="w-full px-10 py-3 outline-0 bg-brown border-b border-l border-beige/70 text-beige"
                 onChange={signup_input_Handler}
                 required
               />
@@ -178,10 +196,7 @@ const Sign_Up = () => {
         {/* Footer Link */}
         <p className="text-center text-sm text-beige/60 mt-6">
           Already have an account?{" "}
-          <NavLink
-            to={"/login"}
-            className="text-beige font-medium hover:underline"
-          >
+          <NavLink to={"/login"} className="text-beige font-medium underline">
             Log In
           </NavLink>
         </p>
