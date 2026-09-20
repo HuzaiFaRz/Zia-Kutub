@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "swiper/css";
 import Lenis from "lenis";
 import Home from "./Pages/Home";
@@ -17,7 +17,7 @@ import Dashboard from "./Pages/Dashboard";
 import Contact_Us from "./Pages/Contact_Us";
 import Privacy_Policy from "./Pages/Privacy_Policy";
 import Terms_Condition from "./Pages/Terms_Condition";
-import Products_Wrapper from "./Pages/Products_Wrapper";
+import { useEffect, useRef } from "react";
 
 const router = createBrowserRouter([
   {
@@ -30,10 +30,13 @@ const router = createBrowserRouter([
       { path: "contact-us", element: <Contact_Us /> },
       { path: "privacy-policy", element: <Privacy_Policy /> },
       { path: "terms-condition", element: <Terms_Condition /> },
-
       {
-        path: "products/:param",
-        element: <Products_Wrapper />,
+        path: ":category",
+        element: <Products_By_Category />,
+      },
+      {
+        path: "product/:id",
+        element: <Product_Details />,
       },
     ],
   },
@@ -58,10 +61,9 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  const lenis = new Lenis({
+  new Lenis({
     autoRaf: true,
   });
-  lenis.on("scroll");
 
   return <RouterProvider router={router} />;
 };

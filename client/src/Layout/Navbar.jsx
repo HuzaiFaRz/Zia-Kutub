@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router";
+import { useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import {
   Banknote,
   BookText,
@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import Lenis from "lenis";
 
 export const otherPagesLinks = [
   {
@@ -46,6 +45,7 @@ export const otherPagesLinks = [
 const Navbar = () => {
   const [headerAsideOpen, setHeaderAsideOpen] = useState(false);
   const [cartAsideOpen, setCartAsideOpen] = useState(false);
+
   const [cartItems, setCartItems] = useState([
     {
       cart_item_id: "cart_804",
@@ -90,36 +90,34 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const lenis = new Lenis();
     document.body.style.overflow =
       headerAsideOpen || cartAsideOpen ? "hidden" : "auto";
-    headerAsideOpen || cartAsideOpen ? lenis.start() : lenis.start();
   }, [headerAsideOpen, cartAsideOpen]);
 
   const productsLinks = [
     {
       linkName: "Quran Kareem",
-      linkURL: "/products/quran-kareem",
+      linkURL: "quran-kareem",
     },
     {
       linkName: "Prayer Mat",
-      linkURL: "/products/prayer-mat",
+      linkURL: "prayer-mat",
     },
     {
       linkName: "Koofi",
-      linkURL: "/products/koofi",
+      linkURL: "koofi",
     },
     {
       linkName: "Books",
-      linkURL: "/products/books",
+      linkURL: "books",
     },
     {
       linkName: "Fragrance Oil",
-      linkURL: "/products/fragrance-oil",
+      linkURL: "fragrance-oil",
     },
     {
       linkName: "Accessories",
-      linkURL: "/products/accessories",
+      linkURL: "/accessories",
     },
   ];
 
@@ -162,7 +160,11 @@ const Navbar = () => {
                 </MenuButton>
 
                 {/* Dropdown */}
-                <MenuItems className="absolute right-0 z-50 mt-3 w-52 origin-top-right rounded-xl border border-brown/20 bg-beige p-1 shadow-xl focus:outline-none">
+                <MenuItems
+                  modal={false}
+                  // anchor="bottom"
+                  className={`absolute right-0 z-50 mt-3 w-52 origin-top-right rounded-xl border border-brown/20 bg-beige p-1 shadow-xl focus:outline-none`}
+                >
                   {false ? (
                     <>
                       <MenuItem>
@@ -231,14 +233,6 @@ const Navbar = () => {
                 </NavLink>
               );
             })}
-            {/* {otherPagesLinks.map((link, ind) => {
-              const { linkName, linkURL } = link;
-              return (
-                <NavLink key={ind} to={linkURL} className="">
-                  {linkName}
-                </NavLink>
-              );
-            })} */}
           </div>
         </nav>
       </header>
@@ -255,7 +249,8 @@ const Navbar = () => {
 
       {/* Header Aside */}
       <aside
-        className={`w-[75%] sm:w-1/2 h-full overflow-auto fixed top-0 bg-mehroon text-beige flex flex-col justify-between items-center ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all`}
+        data-lenis-prevent
+        className={`w-[75%] sm:w-1/2 h-full overflow-y-auto fixed top-0 bg-mehroon text-beige flex flex-col justify-between items-center ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all`}
       >
         <button
           className="absolute top-2 right-2 w-7 sm:w-10 h-7 sm:h-10 flex justify-center items-center text-beige bg-mehroon rounded-full"
@@ -297,7 +292,8 @@ const Navbar = () => {
 
       {/* Cart Aside */}
       <aside
-        className={`w-full data-lenis-prevent h-full overflow-y-auto overscroll-contain fixed top-0 p-3 bg-beige flex flex-col justify-between items-center ${cartAsideOpen ? "right-0 z-100" : "-right-full z-0"} transition-all font-cinzel-bold`}
+        data-lenis-prevent
+        className={`w-full h-screen overflow-y-auto scroll-smooth fixed top-0 p-3 bg-beige flex flex-col justify-between items-center ${cartAsideOpen ? "right-0 z-100" : "-right-full z-0"} transition-all font-cinzel-bold`}
       >
         <div className="w-full p-1 flex gap-2 items-center">
           <button
@@ -313,7 +309,7 @@ const Navbar = () => {
 
         {cartItems.length !== 0 ? (
           <div className="w-full flex flex-col justify-start items-start gap-3 p-0 sm:p-1 text-beige mt-5">
-            <div className="font-lato-regular w-full rounded-2xl p-3 sm:p-5 flex justify-between items-center border-brown bg-mehroon text-xs sm:text-sm">
+            <div className="font-lato-regular w-full rounded-2xl p-5 flex justify-between items-center border-brown bg-mehroon text-xs sm:text-sm">
               <span>Showing {cartItems.length} items in your Cart.</span>
               <button className="text-red-400 flex items-center gap-1 hover:text-red-300">
                 <Trash className="size-4 sm:size-5" />
@@ -393,7 +389,7 @@ const Navbar = () => {
           </div>
         )}
 
-        <div className="w-full mt-5 bg-mehroon text-beige rounded-2xl border border-beige/50 flex flex-col gap-3 p-2 font-lato-regular">
+        <div className="w-full mt-2 bg-mehroon text-beige rounded-2xl border border-beige/50 flex flex-col gap-3 p-2 font-lato-regular">
           <div className="flex justify-between items-center border-b border-beige/20 p-4">
             <h1 className="font-cinzel-bold text-lg sm:text-2xl">
               ORDER SUMMARY

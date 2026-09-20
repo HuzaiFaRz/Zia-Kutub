@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 
 import instagram_icon from "/src/assets/Images/instagram.png";
 import facebook_icon from "/src/assets/Images/facebook.png";
@@ -16,7 +16,7 @@ const Footer = () => {
           >
             Zia Kutub
           </NavLink>
-          <div className="flex justify-center items-center gap-5 text-beige order-2 sm:order-3">
+          <div className="flex justify-center items-center gap-4 text-beige order-2 sm:order-3">
             <a
               href="https://www.instagram.com/ziakutubcenter?stkn=MXVzbzQybWJ5b3ZsYQ=="
               target="_blank"
@@ -35,8 +35,8 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="w-full flex flex-wrap justify-between items-cemter">
-          <div className="hidden md:flex gap-4">
+        <div className="w-full flex flex-row justify-between items-cemter gap-4">
+          <div className="hidden md:flex flex-wrap gap-4">
             {otherPagesLinks.map((link, ind) => {
               const { linkName, linkURL } = link;
               return (
@@ -51,9 +51,11 @@ const Footer = () => {
             })}
           </div>
 
-          <h1 className="font-lato-regular tracking-wide text-xs md:text-sm text-beige/70 text-end w-full sm:w-auto">
-            © 2026 Zia-Kutub. All rights reserved.
-          </h1>
+          <div className="flex justify-end w-full lg:w-auto items-end">
+            <h1 className="font-lato-regular tracking-wide text-sm text-beige/70 text-end">
+              © 2026 Zia-Kutub. All rights reserved.
+            </h1>
+          </div>
         </div>
       </div>
     </footer>

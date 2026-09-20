@@ -1,13 +1,12 @@
 import { useParams } from "react-router-dom";
 
 const Products_By_Category = () => {
-  const { categoryName } = useParams();
-
-  console.log(categoryName);
+  const { category } = useParams();
+  console.log(category);
 
   return (
     <div className="mt-40">
-      <h1>{categoryName}category</h1>
+      <h1>{category}category</h1>
     </div>
   );
 };
