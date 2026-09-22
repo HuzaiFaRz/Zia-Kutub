@@ -82,16 +82,7 @@ const Hero = () => {
                   >
                     {shortDetails}
                   </p>
-
-                  <button
-                    className="inline-flex items-center gap-2
-                   px-6 py-3 rounded-full
-                   bg-brown text-beige font-semibold
-                   shadow-md
-                   hover:bg-brown/90
-                   hover:scale-105
-                   transition-all duration-300 font-cinzel-bold"
-                  >
+                  <button className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-beige font-semibold shadow-mdhover:bg-brown/90 hover:scale-105 transition-all duration-300 font-cinzel-bold">
                     Shop Now
                     <span className="text-lg">→</span>
                   </button>

@@ -57,7 +57,7 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col gap-4 w-xs text-beige">
-            <h1 className="font-cinzel-bold text-2xl font-extrabold">
+            <h1 className="font-cinzel-bold text-2xl">
               Legal & Support
             </h1>
             {otherPagesLinks2.map((link, ind) => {
@@ -66,7 +66,7 @@ const Footer = () => {
                 <NavLink
                   key={ind}
                   to={linkURL}
-                  className="footerLink relative overflow-hidden border-b border-beige/50 text-beige/80 py-3 px-3 tracking-wider text-sm lg:text-lg"
+                  className="footerLink relative overflow-hidden border-b border-beige/50 text-beige/80 py-3 px-3 tracking-wider text-sm lg:text-lg font-lato-regular"
                 >
                   {linkName}
                 </NavLink>

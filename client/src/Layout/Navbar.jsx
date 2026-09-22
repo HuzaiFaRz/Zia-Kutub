@@ -187,7 +187,7 @@ const Navbar = () => {
                       <MenuItem>
                         <NavLink
                           to="/dashboard"
-                          className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-mehroon`}
+                          className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-dark`}
                         >
                           <LayoutDashboard size={19} />
                           Dashboard
@@ -196,7 +196,7 @@ const Navbar = () => {
 
                       <MenuItem>
                         <button
-                          className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-mehroon`}
+                          className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-dark`}
                         >
                           <LogOut size={19} />
                           Logout
@@ -208,7 +208,7 @@ const Navbar = () => {
                       <MenuItem>
                         <NavLink
                           to="/login"
-                          className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-mehroon`}
+                          className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-dark`}
                         >
                           <LogIn size={19} />
                           Login
@@ -218,7 +218,7 @@ const Navbar = () => {
                       <MenuItem>
                         <NavLink
                           to="/sign-up"
-                          className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-mehroon`}
+                          className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-dark`}
                         >
                           <UserPlus size={19} />
                           Register
@@ -245,7 +245,7 @@ const Navbar = () => {
                   key={ind}
                   to={linkURL}
                   className={
-                    "bg-brown text-beige p-1 px-5 rounded-4xl hover:scale-105 transition-transform"
+                    "bg-dark text-beige p-1 px-5 rounded-4xl hover:scale-105 transition-transform"
                   }
                 >
                   {linkName}
@@ -265,7 +265,7 @@ const Navbar = () => {
       {/* Header Aside */}
       <aside
         data-lenis-prevent
-        className={`w-[75%] sm:w-1/2 h-full overflow-y-auto fixed top-0 bg-mehroon text-beige flex flex-col items-center ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all`}
+        className={`w-[75%] sm:w-1/2 h-full overflow-y-auto fixed top-0 bg-dark text-beige flex flex-col items-center ${headerAsideOpen ? "left-0 z-100" : "-left-full z-0"} transition-all`}
       >
         <div className="w-full flex justify-between items-center p-5">
           <NavLink
@@ -321,7 +321,7 @@ const Navbar = () => {
       {/* Cart Aside */}
       <aside
         data-lenis-prevent
-        className={`w-full h-screen overflow-y-auto scroll-smooth fixed top-0 p-3 bg-beige flex flex-col justify-between items-center ${cartAsideOpen ? "right-0 z-100" : "-right-full z-0"} transition-all font-cinzel-bold`}
+        className={`w-full h-full overflow-y-auto scroll-smooth fixed top-0 p-3 bg-beige flex flex-col justify-between items-center ${cartAsideOpen ? "right-0 z-100" : "-right-full z-0"} transition-all font-cinzel-bold`}
       >
         <div className="w-full p-1 flex gap-2 items-center">
           <button
@@ -384,7 +384,7 @@ const Navbar = () => {
                     </div>
                   </div>
                   <div className="flex justify-end lg:justify-center items-center gap-10 w-full lg:w-auto text-xs sm:text-lg">
-                    <div className="bg-black flex items-center justify-between py-1 sm:py-2 px-3 sm:px-5 gap-5 rounded-lg border-beige/50 border mr-3 sm:mr-5">
+                    <div className="bg-dark flex items-center justify-between py-1 sm:py-2 px-3 sm:px-5 gap-5 rounded-lg border-beige/50 border mr-3 sm:mr-5">
                       <Minus size={20} />
                       <span>1</span>
                       <Plus size={20} />
