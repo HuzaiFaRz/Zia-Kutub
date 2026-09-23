@@ -1,76 +1,85 @@
-import { useState } from "react";
+import { PlusCircle, ShoppingBag, LogOut } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
-import { NavLink, Outlet } from "react-router";
-import Logo from "../assets/Images/22.png";
-import {
-  ArrowLeft,
-  LoaderCircle,
-  LogOut,
-  TextAlignJustify,
-} from "lucide-react";
+const AdminDashboard = () => {
+  const adminLink = [
+    {
+      linkName: "Add Product",
+      linkURL: "/admin/products/add",
+    },
+    {
+      linkName: "Orders",
+      linkURL: "/admin/orders",
+    },
+  ];
 
-const Admin_Dashboard = () => {
-  const [asideOpen, setAsidOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const aside_Handler = () => {
-    setAsidOpen(!asideOpen);
-    document.body.style.overflow = !asideOpen ? "hidden" : "auto";
+  const handleLogout = () => {
+    // Insert your authentication cleanup / redirect logic here
+    console.log("Logged out successfully");
   };
 
   return (
-    <>
-      <header className="fixed top-0 w-full bg-amber-50 flex justify-between items-center px-4 z-50">
-        <TextAlignJustify
-          onClick={aside_Handler}
-          size={50}
-          className="cursor-pointer"
-        />
-        <img src={Logo} alt="Logo" className="w-32 h-32" />
+    <main className="w-full min-h-screen bg-beige">
+      <header className=" bg-dark w-full flex flex-wrap justify-center sm:justify-between items-center px-6 sm:px-10 py-5 gap-5">
+        <div className="w-full sm:w-auto flex justify-between items-center space-x-3">
+          <NavLink
+            to={"/admin"}
+            className="font-playfair-bold text-beige text-3xl lg:text-4xl cursor-pointer"
+          >
+            Zia Kutub
+            <div className="w-full h-px bg-linear-to-r from-transparent via-beige to-transparent mt-2"></div>
+          </NavLink>
+          <span className="text-xs px-2.5 py-1 rounded border tracking-wider font-lato-regular bg-beige">
+            ADMIN
+          </span>
+        </div>
+
+        <nav className="flex items-center gap-5">
+          {adminLink.map((link, ind) => {
+            const { linkName, linkURL } = link;
+            return (
+              <NavLink
+                key={ind}
+                to={linkURL}
+                className={
+                  "flex items-center gap-3 px-4 py-2 rounded-2xl transition-all duration-150 text-beige p-1 hover:scale-105 font-lato-regular text-sm bg-mehroon border border-beige/60"
+                }
+              >
+                {ind === 0 ? (
+                  <PlusCircle className="w-4 h-4" />
+                ) : (
+                  <ShoppingBag className="w-4 h-4" />
+                )}
+                {linkName}
+              </NavLink>
+            );
+          })}
+        </nav>
+
         <button
-          disabled={loading}
-          type="submit"
-          className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-5 rounded-lg transition duration-200 flex justify-center items-center gap-4"
+          onClick={handleLogout}
+          className={
+            "flex items-center gap-3 px-4 py-1 rounded text-white p-1 hover:scale-105 font-playfair-regular text-lg bg-red-500"
+          }
         >
-          {loading ? "Please Wait" : "Log out"}
-          {loading ? (
-            <LoaderCircle size={20} className="animate-spin" />
-          ) : (
-            <LogOut size={20} />
-          )}
+          <LogOut className="w-4 h-4" />
+          <span>Logout</span>
         </button>
       </header>
-      <aside
-        className={`absolute top-0 ${asideOpen ? "left-0" : "-left-full"} w-[20%] h-full bg-black flex flex-col items-start justify-evenly text-white px-3 transition-all z-100`}
-      >
-        <ArrowLeft
-          onClick={aside_Handler}
-          size={50}
-          className="absolute top-4 right-4 cursor-pointer"
-        />
 
-        <NavLink
-          to={"orders"}
-          className="hover:underline text-lg sm:text-2xl uppercase font-cinzel-semibold"
-        >
-          Orders
-        </NavLink>
-        <NavLink
-          to={"products"}
-          className="hover:underline text-lg sm:text-2xl uppercase font-cinzel-semibold"
-        >
-          Products
-        </NavLink>
-        <NavLink
-          to={"products/add"}
-          className="hover:underline text-lg sm:text-2xl uppercase font-cinzel-semibold"
-        >
-          Add Product
-        </NavLink>
-      </aside>
-
-      <Outlet />
-    </>
+      <section className="w-full h-full bg-mehroon">
+        <div className="w-full p-4 items-center text-center justify-center">
+          <h1 className="text-4xl mb-2 text-beige font-cinzel-bold">
+            All Products
+          </h1>
+          <p className="text-sm text-beige/80 font-lato-regular">
+            Manage your Islamic lifestyle store inventory, cap models, and
+            prayer mat variants.
+          </p>
+        </div>
+      </section>
+    </main>
   );
 };
 
-export default Admin_Dashboard;
+export default AdminDashboard;
