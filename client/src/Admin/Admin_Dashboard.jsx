@@ -1,11 +1,12 @@
 import { PlusCircle, ShoppingBag, LogOut } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
+import { buttonCancleStyle } from "../global";
 
 const AdminDashboard = () => {
   const adminLink = [
     {
       linkName: "Add Product",
-      linkURL: "/admin/products/add",
+      linkURL: "products/add",
     },
     {
       linkName: "Orders",
@@ -56,28 +57,13 @@ const AdminDashboard = () => {
           })}
         </nav>
 
-        <button
-          onClick={handleLogout}
-          className={
-            "flex items-center gap-3 px-4 py-1 rounded text-white p-1 hover:scale-105 font-playfair-regular text-lg bg-red-500"
-          }
-        >
+        <button onClick={handleLogout} className={`${buttonCancleStyle}`}>
           <LogOut className="w-4 h-4" />
           <span>Logout</span>
         </button>
       </header>
 
-      <section className="w-full h-full bg-mehroon">
-        <div className="w-full p-4 items-center text-center justify-center">
-          <h1 className="text-4xl mb-2 text-beige font-cinzel-bold">
-            All Products
-          </h1>
-          <p className="text-sm text-beige/80 font-lato-regular">
-            Manage your Islamic lifestyle store inventory, cap models, and
-            prayer mat variants.
-          </p>
-        </div>
-      </section>
+      <Outlet />
     </main>
   );
 };

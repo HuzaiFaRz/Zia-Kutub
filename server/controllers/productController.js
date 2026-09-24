@@ -8,12 +8,11 @@ export const createProduct = async (req, res) => {
       slug,
       category,
       brand,
-      price,
-      stock,
-      isAvailable,
+      isActive,
+      isFeatured,
       specifications,
+      variants,
       description,
-      images,
     } = req.body;
 
     if (
@@ -23,17 +22,29 @@ export const createProduct = async (req, res) => {
       title.trim().length < 3 ||
       /^\s|\s$|\s{2,}/.test(title) ||
       !category ||
-      price === undefined ||
-      isNaN(price) ||
-      price < 0 ||
-      stock === undefined ||
-      isNaN(stock) ||
-      stock < 0 ||
-      !Array.isArray(images) ||
-      images.length === 0 ||
+      !Array.isArray(variants) ||
+      variants.length === 0 ||
+      variants.length > 6 ||
+      variants.some(
+        (variant) =>
+          !variant.color?.trim() ||
+          variant.price === undefined ||
+          isNaN(variant.price) ||
+          variant.price < 0 ||
+          variant.stock === undefined ||
+          isNaN(variant.stock) ||
+          variant.stock < 0 ||
+          !Array.isArray(variant.images) ||
+          variant.images.length === 0 ||
+          variant.images.length > 2 ||
+          variant.images.some((image) => !image.url?.trim()),
+      ) ||
       (specifications &&
         (!Array.isArray(specifications) ||
-          specifications.some((s) => !s.key?.trim() || !s.value?.trim())))
+          specifications.length > 6 ||
+          specifications.some(
+            (spec) => !spec.key?.trim() || !spec.value?.trim(),
+          )))
     ) {
       return res
         .status(400)

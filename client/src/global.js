@@ -1,0 +1,3 @@
+export const iconStyle = `flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-brown/20 text-brown transition hover:bg-brown hover:text-beige`;
+export const buttonStyle = `flex items-center justify-center gap-2 rounded-xl bg-mehroon px-5 py-2 transition hover:bg-brown`;
+export const buttonCancleStyle = `flex items-center gap-3 px-4 py-2 rounded text-white font-lato-regular text-sm bg-red-600 tracking-widest`;
