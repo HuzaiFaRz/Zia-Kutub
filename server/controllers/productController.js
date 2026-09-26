@@ -8,44 +8,28 @@ export const createProduct = async (req, res) => {
       slug,
       category,
       brand,
-      isActive,
-      isFeatured,
       specifications,
       variants,
       description,
+      isAvailable,
     } = req.body;
 
-    if (
-      !title ||
-      !slug ||
-      !description ||
-      title.trim().length < 3 ||
-      /^\s|\s$|\s{2,}/.test(title) ||
-      !category ||
-      !Array.isArray(variants) ||
-      variants.length === 0 ||
-      variants.length > 6 ||
-      variants.some(
-        (variant) =>
-          !variant.color?.trim() ||
-          variant.price === undefined ||
-          isNaN(variant.price) ||
-          variant.price < 0 ||
-          variant.stock === undefined ||
-          isNaN(variant.stock) ||
-          variant.stock < 0 ||
-          !Array.isArray(variant.images) ||
-          variant.images.length === 0 ||
-          variant.images.length > 2 ||
-          variant.images.some((image) => !image.url?.trim()),
-      ) ||
-      (specifications &&
-        (!Array.isArray(specifications) ||
-          specifications.length > 6 ||
-          specifications.some(
-            (spec) => !spec.key?.trim() || !spec.value?.trim(),
-          )))
-    ) {
+    console.log(req.uploadedImages);
+
+    const specificationsChecking = specifications.find(
+      (fields) => !fields.key || !fields.value,
+    );
+
+    const variantChecking = variants.find(
+      (fields) =>
+        !fields.color ||
+        !fields.price ||
+        !fields.stock ||
+        fields.images.length === 0 ||
+        !fields.isDefault,
+    );
+
+    if (!title || !slug || !description || !brand || category === null) {
       return res
         .status(400)
         .json({ message: "Invalid or missing product inputs" });

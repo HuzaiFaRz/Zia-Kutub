@@ -16,14 +16,23 @@ import { NavLink } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import api from "../api/axios";
+import Loading from "../Components/Loading";
 
 const categories = [
-  { id: "quran-kareem", name: "Quran Kareem" },
-  { id: "books", name: "Islamic Books" },
-  { id: "prayer-mat", name: "Prayer Mat" },
-  { id: "koofi", name: "Koofi / Topi" },
-  { id: "fragrance-oil", name: "Fragrance Oil" },
-  { id: "accessories", name: "Accessories" },
+  {
+    _id: "66f0a1b2c3d4e5f678901234",
+    name: "Quran Kareem",
+    slug: "quran-kareem",
+  },
+  { _id: "66f0a1b2c3d4e5f678901235", name: "Islamic Books", slug: "books" },
+  { _id: "66f0a1b2c3d4e5f678901236", name: "Prayer Mat", slug: "prayer-mat" },
+  { _id: "66f0a1b2c3d4e5f678901237", name: "Koofi / Topi", slug: "koofi" },
+  {
+    _id: "66f0a1b2c3d4e5f678901238",
+    name: "Fragrance Oil",
+    slug: "fragrance-oil",
+  },
+  { _id: "66f0a1b2c3d4e5f678901239", name: "Accessories", slug: "accessories" },
 ];
 
 const Admin_Add_Product = () => {
@@ -65,7 +74,7 @@ const Admin_Add_Product = () => {
   const handleCategoryChange = (category) => {
     setProduct((prev) => ({
       ...prev,
-      category,
+      category: category,
     }));
   };
 
@@ -164,11 +173,15 @@ const Admin_Add_Product = () => {
 
   const handleImages = (index, e) => {
     const files = Array.from(e.target.files);
-
+    const MAX_SIZE = 3 * 1024 * 1024;
     if (files[0]) {
       if (!files[0].type.startsWith("image/")) {
         toast("Please Select Image");
         console.error("Not an image.");
+        return;
+      }
+      if (files[0].size > MAX_SIZE) {
+        toast("File is too large! Maximum 5MB.");
         return;
       }
     }
@@ -229,29 +242,23 @@ const Admin_Add_Product = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const productData = {
-      ...product,
-      category: product.category?.id,
-      slug: generateSlug(product.title),
-    };
-
     if (
       !product.title ||
       !product.description ||
       !product.brand ||
-      product.category === null
+      product.category === null ||
+      product.category === undefined ||
+      !product.category
     ) {
       toast("Please Fill Basic Info", product.category);
       return;
     }
-
     const specificationsChecking = product.specifications.find(
       (fields) => !fields.key || !fields.value,
     );
 
     if (specificationsChecking) {
       toast("Please Fill Specification Fields");
-
       return;
     }
 
@@ -260,50 +267,68 @@ const Admin_Add_Product = () => {
         !fields.color ||
         !fields.price ||
         !fields.stock ||
-        fields.images.length === 0 ||
-        !fields.isDefault,
+        fields.images.length === 0,
     );
 
-    if (variantChecking) {
+    const variantIsDefaultChecking = product.variants.some(
+      (e) => e.isDefault !== true,
+    );
+
+    if (variantChecking || variantIsDefaultChecking) {
       toast("Please Fill Variant Fields");
       return;
     }
 
+    const formData = new FormData();
+
+    formData.append("title", product.title);
+    formData.append("description", product.description);
+    formData.append("slug", generateSlug(product.title));
+    formData.append("category", product.category);
+    formData.append("brand", product.brand);
+    formData.append("isAvailable", product.isAvailable);
+    formData.append("specifications", JSON.stringify(product.specifications));
+    const cleanVariants = product.variants.map((variant) => ({
+      color: variant.color,
+      price: variant.price,
+      stock: variant.stock,
+      isDefault: variant.isDefault,
+    }));
+
+    formData.append("variants", JSON.stringify(cleanVariants));
+    product.variants.forEach((variant) => {
+      if (variant.images && variant.images.length > 0) {
+        variant.images.forEach((imgObj) => {
+          if (imgObj.file) {
+            formData.append("images", imgObj.file);
+          }
+        });
+      }
+    });
+
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(`${key}:`, value);
+    // }
+
     try {
       setLoading(true);
-      console.log("PRODUCT DATA:", productData);
-
-      console.log(`http://localhost:5000/api/products/create`)
-
-      const res = await api.post("/products/create", productData);
-
-      console.log(res);
+      const response = await api.post("/products/create", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setLoading(false);
+      console.log("Product Created:", response.data);
     } catch (error) {
       setLoading(false);
-
-      console.error(error);
+      console.error("Upload error:", error);
     }
   };
 
   return (
     <div className="min-h-screen bg-beige px-4 py-6 sm:px-6 lg:px-10">
-      {loading && (
-        <div className="flex items-center justify-center fixed top-0 right-0  backdrop-blur-xl w-full h-screen z-100 text-beige">
-          <LoaderCircle className="animate-spin" size={300} />
-        </div>
-      )}
+      {loading && <Loading />}
 
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        newestOnTop={false}
-        rtl={false}
-        draggable
-        theme="dark"
-        toastClassName="!bg-[#1f150c] !text-[#e1dcc9] !border !border-[#412d15] !rounded-2xl !font-lato-regular !shadow-[0_10px_35px_rgba(12,12,12,0.35)]"
-        bodyClassName="!text-[#e1dcc9] !font-sora !text-sm"
-        progressClassName="!bg-[#e1dcc9]"
-      />
       <div className="mx-auto w-full max-w-7xl">
         <div className="mb-8 flex gap-5 items-center bg-mehroon rounded-2xl text-beige p-3">
           <NavLink
@@ -367,15 +392,19 @@ const Admin_Add_Product = () => {
                             product.category ? "text-beige" : "text-beige/40"
                           }
                         >
-                          {product.category?.name || "Select Category"}
+                          {product.category
+                            ? categories.map(
+                                (e) => e._id === product.category && e.name,
+                              )
+                            : "Select Category"}
                         </span>
                         <ChevronDown size={18} className="text-beige" />
                       </Listbox.Button>
                       <Listbox.Options className="absolute z-50 mt-2 max-h-60 w-full overflow-auto rounded-xl bg-beige/80 backdrop-blur-2xl p-1 outline-none">
                         {categories.map((category) => (
                           <Listbox.Option
-                            key={category.id}
-                            value={category}
+                            key={category._id}
+                            value={category._id}
                             className={({ active }) =>
                               `flex cursor-pointer items-center justify-between rounded-lg px-3 py-1.5 text-sm ${active ? "bg-brown text-beige" : "text-mehroon"}`
                             }

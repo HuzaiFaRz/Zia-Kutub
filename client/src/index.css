@@ -21,7 +21,8 @@ body {
 }
 
 button,
-svg ,label{
+svg,
+label {
   cursor: pointer;
   outline: none !important;
 }

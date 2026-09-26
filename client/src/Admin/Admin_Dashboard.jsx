@@ -1,6 +1,7 @@
 import { PlusCircle, ShoppingBag, LogOut } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { buttonCancleStyle } from "../global";
+import Toast from "../Components/Toast";
 
 const AdminDashboard = () => {
   const adminLink = [
@@ -21,6 +22,7 @@ const AdminDashboard = () => {
 
   return (
     <main className="w-full min-h-screen bg-beige">
+      <Toast />
       <header className=" bg-dark w-full flex flex-wrap justify-center sm:justify-between items-center px-6 sm:px-10 py-5 gap-5">
         <div className="w-full sm:w-auto flex justify-between items-center space-x-3">
           <NavLink
