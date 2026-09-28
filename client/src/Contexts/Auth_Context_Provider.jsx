@@ -7,7 +7,11 @@ export const AuthUseContext = () => useContext(AuthContextCreated);
 
 const Auth_Context_Provider = ({ children }) => {
   const [authLoading, setAuthLoading] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    email: "hello@gmail.com",
+    role: "admin",
+    password: "sdkjfdskjfnds",
+  });
 
   // const isUserValid = async () => {
   //   try {

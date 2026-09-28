@@ -58,18 +58,29 @@ const productSchema = new mongoose.Schema(
           trim: true,
         },
 
-        price: {
-          type: Number,
-          required: [true, "Variant price is required"],
-          min: 0,
-        },
+        // Sizes
+        sizes: [
+          {
+            size: {
+              type: String,
+              required: [true, "Size is required"],
+              trim: true,
+            },
 
-        stock: {
-          type: Number,
-          required: [true, "Variant stock is required"],
-          default: 0,
-          min: 0,
-        },
+            price: {
+              type: Number,
+              required: [true, "Size price is required"],
+              min: 0,
+            },
+
+            stock: {
+              type: Number,
+              required: [true, "Size stock is required"],
+              default: 0,
+              min: 0,
+            },
+          },
+        ],
 
         isDefault: {
           type: Boolean,

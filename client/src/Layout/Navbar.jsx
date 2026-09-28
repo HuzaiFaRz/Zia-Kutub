@@ -182,11 +182,11 @@ const Navbar = () => {
                   modal={false}
                   className={`absolute right-0 z-50 mt-3 w-52 origin-top-right rounded-xl border border-brown/20 bg-beige p-1 shadow-xl focus:outline-none`}
                 >
-                  {false ? (
+                  {true ? (
                     <>
                       <MenuItem>
                         <NavLink
-                          to="/dashboard"
+                          to="/user/dashboard"
                           className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-dark`}
                         >
                           <LayoutDashboard size={19} />

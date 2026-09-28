@@ -5,16 +5,13 @@ import {
   ChevronDown,
   ChevronLeft,
   ImagePlus,
-  LoaderCircle,
   PackagePlus,
   Plus,
   Trash2,
   X,
 } from "lucide-react";
-import { buttonCancleStyle } from "../global";
 import { NavLink } from "react-router-dom";
-
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import api from "../api/axios";
 import Loading from "../Components/Loading";
 
@@ -54,8 +51,13 @@ const Admin_Add_Product = () => {
     variants: [
       {
         color: "Standard",
-        price: "",
-        stock: "",
+        sizes: [
+          {
+            size: "",
+            price: "",
+            stock: "",
+          },
+        ],
         isDefault: true,
         images: [],
       },
@@ -143,8 +145,13 @@ const Admin_Add_Product = () => {
         ...prev.variants,
         {
           color: "",
-          price: "",
-          stock: "",
+          sizes: [
+            {
+              size: "",
+              price: "",
+              stock: "",
+            },
+          ],
           isDefault: false,
           images: [],
         },
@@ -169,6 +176,112 @@ const Admin_Add_Product = () => {
         isDefault: i === index,
       })),
     }));
+  };
+
+  const addSizesInVariant = (variantIndex) => {
+    if (product.variants[variantIndex].sizes.length >= 5) return;
+    setProduct((prev) => {
+      const variants = [...prev.variants];
+
+      variants[variantIndex] = {
+        ...variants[variantIndex],
+        sizes: [
+          ...variants[variantIndex].sizes,
+          {
+            size: "",
+            price: "",
+            stock: "",
+          },
+        ],
+      };
+
+      return {
+        ...prev,
+        variants,
+      };
+    });
+  };
+
+  const variantSizeHandler = (variantIndex, sizeIndex, e) => {
+    setProduct((prev) => {
+      const variants = [...prev.variants];
+      const sizes = [...variants[variantIndex].sizes];
+
+      sizes[sizeIndex] = {
+        ...sizes[sizeIndex],
+        size: e.target.value,
+      };
+
+      variants[variantIndex] = {
+        ...variants[variantIndex],
+        sizes,
+      };
+
+      return {
+        ...prev,
+        variants,
+      };
+    });
+  };
+
+  const variantPriceHandler = (variantIndex, sizeIndex, e) => {
+    setProduct((prev) => {
+      const variants = [...prev.variants];
+      const sizes = [...variants[variantIndex].sizes];
+
+      sizes[sizeIndex] = {
+        ...sizes[sizeIndex],
+        price: e.target.value,
+      };
+
+      variants[variantIndex] = {
+        ...variants[variantIndex],
+        sizes,
+      };
+
+      return {
+        ...prev,
+        variants,
+      };
+    });
+  };
+
+  const variantStockHandler = (variantIndex, sizeIndex, e) => {
+    setProduct((prev) => {
+      const variants = [...prev.variants];
+      const sizes = [...variants[variantIndex].sizes];
+
+      sizes[sizeIndex] = {
+        ...sizes[sizeIndex],
+        stock: e.target.value,
+      };
+
+      variants[variantIndex] = {
+        ...variants[variantIndex],
+        sizes,
+      };
+
+      return {
+        ...prev,
+        variants,
+      };
+    });
+  };
+
+  const removeVariantSizes = (variantIndex, sizeIndex) => {
+    setProduct((prev) => {
+      const variants = [...prev.variants];
+
+      variants[variantIndex] = {
+        ...variants[variantIndex],
+        sizes: variants[variantIndex].sizes.filter((_, i) => i !== sizeIndex),
+      };
+
+      return {
+        ...prev,
+        variants,
+      };
+    });
   };
 
   const handleImages = (index, e) => {
@@ -263,18 +376,21 @@ const Admin_Add_Product = () => {
     }
 
     const variantChecking = product.variants.find(
-      (fields) =>
-        !fields.color ||
-        !fields.price ||
-        !fields.stock ||
-        fields.images.length === 0,
+      (variant) =>
+        !variant.color ||
+        variant.images.length === 0 ||
+        variant.sizes.length === 0 ||
+        variant.sizes.some(
+          (size) => !size.size || size.price === "" || size.stock === "",
+        ),
     );
-
-    const variantIsDefaultChecking = product.variants.some(
-      (e) => e.isDefault !== true,
-    );
+    const defaultCount = product.variants.filter(
+      (variant) => variant.isDefault === true,
+    ).length;
+    const variantIsDefaultChecking = defaultCount !== 1;
 
     if (variantChecking || variantIsDefaultChecking) {
+      console.log(variantChecking, variantIsDefaultChecking);
       toast("Please Fill Variant Fields");
       return;
     }
@@ -288,10 +404,14 @@ const Admin_Add_Product = () => {
     formData.append("brand", product.brand);
     formData.append("isAvailable", product.isAvailable);
     formData.append("specifications", JSON.stringify(product.specifications));
+
     const cleanVariants = product.variants.map((variant) => ({
       color: variant.color,
-      price: variant.price,
-      stock: variant.stock,
+      sizes: variant.sizes.map((size) => ({
+        size: size.size,
+        price: Number(size.price),
+        stock: Number(size.stock),
+      })),
       isDefault: variant.isDefault,
     }));
 
@@ -306,23 +426,25 @@ const Admin_Add_Product = () => {
       }
     });
 
+    console.log(product);
+
     // for (let [key, value] of formData.entries()) {
     //   console.log(`${key}:`, value);
     // }
 
-    try {
-      setLoading(true);
-      const response = await api.post("/products/create", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      setLoading(false);
-      console.log("Product Created:", response.data);
-    } catch (error) {
-      setLoading(false);
-      console.error("Upload error:", error);
-    }
+    // try {
+    //   setLoading(true);
+    //   const response = await api.post("/products/create", formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   });
+    //   setLoading(false);
+    //   console.log("Product Created:", response.data);
+    // } catch (error) {
+    //   setLoading(false);
+    //   console.error("Upload error:", error);
+    // }
   };
 
   return (
@@ -507,15 +629,16 @@ const Admin_Add_Product = () => {
                       placeholder="Value e.g. Velvet"
                       className="w-full rounded-xl bg-brown/80 px-4 py-3 text-beige placeholder:text-beige/50"
                     />
-
-                    <button
-                      type="button"
-                      onClick={() => removeSpecification(index)}
-                      disabled={product.specifications.length === 1}
-                      className="m-2 disabled:cursor-not-allowed disabled:opacity-40 sm:self-auto text-red-500"
-                    >
-                      <Trash2 size={18} />
-                    </button>
+                    {product.specifications.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeSpecification(index)}
+                        disabled={product.specifications.length === 1}
+                        className="m-2 disabled:cursor-not-allowed disabled:opacity-40 sm:self-auto text-red-500"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -534,7 +657,8 @@ const Admin_Add_Product = () => {
                     Product Variants
                   </h2>
                   <p className="mt-1 text-sm text-beige/70">
-                    Maximum 6 variants • Maximum 2 images per variant
+                    Maximum 6 variants • Maximum 2 images per variant • Maximum
+                    5 sizes per variant
                   </p>
                 </div>
 
@@ -573,10 +697,10 @@ const Admin_Add_Product = () => {
                       )}
                     </div>
 
-                    <div className="flex flex-col gap-4 lg:flex-row mt-3">
+                    <div className="flex flex-col gap-4 items-center mt-3 w-full">
                       {/* Color */}
 
-                      <div className="flex min-w-0 flex-1 flex-col gap-2">
+                      <div className="flex w-full flex-1 flex-col gap-2">
                         <label className="text-sm text-beige" htmlFor="color">
                           Color
                         </label>
@@ -597,47 +721,114 @@ const Admin_Add_Product = () => {
                         />
                       </div>
 
-                      <div className="flex min-w-0 flex-1 flex-col gap-2">
-                        <label className="text-sm text-beige" htmlFor="price">
-                          Price
-                        </label>
-                        <input
-                          id="price"
-                          type="number"
-                          min="0"
-                          value={variant.price}
-                          onChange={(e) =>
-                            handleVariantChange(
-                              variantIndex,
-                              "price",
-                              e.target.value,
-                            )
-                          }
-                          placeholder="0"
-                          required
-                          className="w-full rounded-xl bg-brown/80 px-4 py-3 text-beige placeholder:text-beige/50"
-                        />
-                      </div>
-                      <div className="flex min-w-0 flex-1 flex-col gap-2">
-                        <label className="text-sm text-beige" htmlFor="stock">
-                          Stock
-                        </label>
-                        <input
-                          id="stock"
-                          type="number"
-                          min="0"
-                          value={variant.stock}
-                          onChange={(e) =>
-                            handleVariantChange(
-                              variantIndex,
-                              "stock",
-                              e.target.value,
-                            )
-                          }
-                          placeholder="0"
-                          required
-                          className="w-full rounded-xl bg-brown/80 px-4 py-3 text-beige placeholder:text-beige/50"
-                        />
+                      <div className="mt-5 w-full">
+                        <div className="mb-3 flex items-center justify-between">
+                          <div>
+                            <label className="text-sm text-beige">Sizes</label>
+                            <p className="text-xs text-beige/50">
+                              Add size, price and stock for this color
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            disabled={
+                              product.variants[variantIndex].sizes.length >= 5
+                            }
+                            onClick={() => addSizesInVariant(variantIndex)}
+                            className="flex items-center justify-center gap-2 rounded-xl bg-beige px-4 py-2.5 text-sm font-semibold text-mehroon disabled:cursor-not-allowed disabled:opacity-40"
+                          >
+                            <Plus size={15} />
+                            Add Size
+                          </button>
+                        </div>
+
+                        <div className="flex flex-col gap-3">
+                          {variant.sizes.map((sizeItem, sizeIndex) => (
+                            <div
+                              key={sizeIndex}
+                              className="flex flex-col gap-3 rounded-xl border border-beige/10 p-3 sm:flex-row sm:items-end"
+                            >
+                              {/* Size */}
+                              <div className="flex min-w-0 flex-1 flex-col gap-2">
+                                <label className="text-xs text-beige/70">
+                                  Size
+                                </label>
+
+                                <input
+                                  type="text"
+                                  value={sizeItem.size}
+                                  onChange={(e) =>
+                                    variantSizeHandler(
+                                      variantIndex,
+                                      sizeIndex,
+                                      e,
+                                    )
+                                  }
+                                  placeholder="e.g. S, M, L, 56, 58"
+                                  className="w-full rounded-xl bg-brown/80 px-4 py-3 text-beige placeholder:text-beige/50"
+                                />
+                              </div>
+
+                              {/* Price */}
+                              <div className="flex min-w-0 flex-1 flex-col gap-2">
+                                <label className="text-xs text-beige/70">
+                                  Price
+                                </label>
+
+                                <input
+                                  type="number"
+                                  min="0"
+                                  value={sizeItem.price}
+                                  onChange={(e) =>
+                                    variantPriceHandler(
+                                      variantIndex,
+                                      sizeIndex,
+                                      e,
+                                    )
+                                  }
+                                  placeholder="0"
+                                  className="w-full rounded-xl bg-brown/80 px-4 py-3 text-beige placeholder:text-beige/50"
+                                />
+                              </div>
+
+                              {/* Stock */}
+                              <div className="flex min-w-0 flex-1 flex-col gap-2">
+                                <label className="text-xs text-beige/70">
+                                  Stock
+                                </label>
+
+                                <input
+                                  type="number"
+                                  min="0"
+                                  value={sizeItem.stock}
+                                  onChange={(e) =>
+                                    variantStockHandler(
+                                      variantIndex,
+                                      sizeIndex,
+                                      e,
+                                    )
+                                  }
+                                  placeholder="0"
+                                  className="w-full rounded-xl bg-brown/80 px-4 py-3 text-beige placeholder:text-beige/50"
+                                />
+                              </div>
+
+                              {/* Remove Size */}
+                              {variant.sizes.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    removeVariantSizes(variantIndex, sizeIndex)
+                                  }
+                                  className="mb-2 text-red-500"
+                                >
+                                  <Trash2 size={18} />
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
 
@@ -756,7 +947,10 @@ const Admin_Add_Product = () => {
             </section>
 
             <div className="w-full flex justify-end gap-4 items-center text-beige bg-mehroon rounded-2xl p-4">
-              <NavLink to={"/admin"} className={`${buttonCancleStyle}`}>
+              <NavLink
+                to={"/admin"}
+                className={`flex items-center gap-3 px-4 py-2 rounded text-beige font-lato-regular text-sm bg-brown tracking-widest`}
+              >
                 Cancel
               </NavLink>
 

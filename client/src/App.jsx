@@ -50,13 +50,17 @@ const App = () => {
             </Route>
           </Route>
 
-          <Route path="admin" element={<Admin_Route />}>
-            <Route element={<Admin_Dashboard />}>
-              <Route path="products" element={<Admin_Add_Product />} />
-              <Route path="product/add" element={<Admin_Add_Product />} />
-              <Route path="product/edit/:id" element={<Admin_Edit_Product />} />
-              <Route path="orders" element={<Admin_All_Orders />} />
-            </Route>
+          <Route
+            path="admin"
+            element={
+              <Admin_Route>
+                <Admin_Dashboard />
+              </Admin_Route>
+            }
+          >
+            <Route path="product/add" element={<Admin_Add_Product />} />
+            <Route path="product/edit/:id" element={<Admin_Edit_Product />} />
+            <Route path="orders" element={<Admin_All_Orders />} />
           </Route>
 
           <Route path="auth" element={<Auth_Route />}>

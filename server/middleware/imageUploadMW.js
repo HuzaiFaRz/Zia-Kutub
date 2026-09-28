@@ -11,7 +11,7 @@ export const uploadingImages = async (req, res, next) => {
       return new Promise((resolve, reject) => {
         const stream = cloudinaryConfig.uploader.upload_stream(
           {
-            folder: "ZIA_KUTUB/PRODUCTS",
+            folder: `ZIA_KUTUB/PRODUCTS/${req.slug}`,
             resource_type: "image",
           },
           (error, result) => {

@@ -1,13 +1,12 @@
 import { PlusCircle, ShoppingBag, LogOut } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
-import { buttonCancleStyle } from "../global";
 import Toast from "../Components/Toast";
 
 const AdminDashboard = () => {
   const adminLink = [
     {
       linkName: "Add Product",
-      linkURL: "products/add",
+      linkURL: "/admin/product/add",
     },
     {
       linkName: "Orders",

@@ -14,41 +14,68 @@ export const createProduct = async (req, res) => {
       description,
     } = req.body;
 
-    const isSpecificationsInvalid = specifications.some(
-      (field) => !field?.key?.trim() || !field?.value?.trim(),
+    const isSpecificationsInvalid =
+      !Array.isArray(specifications) ||
+      specifications.some(
+        (field) => !field?.key?.trim() || !field?.value?.trim(),
+      );
+
+    const isVariantInvalid =
+      !Array.isArray(variants) ||
+      variants.length === 0 ||
+      variants.some((variant) => {
+        const isColorInvalid = !variant?.color?.trim();
+
+        const isSizesInvalid =
+          !Array.isArray(variant?.sizes) ||
+          variant.sizes.length === 0 ||
+          variant.sizes.some((size) => {
+            const isSizeInvalid = !size?.size?.trim();
+
+            const isPriceInvalid =
+              typeof size?.price !== "number" || size.price < 0;
+
+            const isStockInvalid =
+              typeof size?.stock !== "number" || size.stock < 0;
+
+            return isSizeInvalid || isPriceInvalid || isStockInvalid;
+          });
+
+        const isImagesInvalid =
+          !Array.isArray(variant?.images) || variant.images.length === 0;
+
+        const isDefaultInvalid = typeof variant?.isDefault !== "boolean";
+
+        return (
+          isColorInvalid ||
+          isSizesInvalid ||
+          isImagesInvalid ||
+          isDefaultInvalid
+        );
+      });
+
+    const defaultVariants = variants.filter(
+      (variant) => variant?.isDefault === true,
     );
 
-    const isVariantInvalid = variants.some((field) => {
-      const isColorInvalid = !field?.color?.trim();
-      const isPriceInvalid =
-        typeof field?.price !== "number" || field.price < 0;
-      const isStockInvalid =
-        typeof field?.stock !== "number" || field.stock < 0;
-      const isImagesInvalid =
-        !Array.isArray(field?.images) || field.images.length === 0;
-      const isDefaultInvalid = typeof field?.isDefault !== "boolean";
-
-      return (
-        isColorInvalid ||
-        isPriceInvalid ||
-        isStockInvalid ||
-        isImagesInvalid ||
-        isDefaultInvalid
-      );
-    });
-
     if (
-      !title ||
-      !slug ||
-      !description ||
-      !brand ||
-      category === null ||
+      !title?.trim() ||
+      !slug?.trim() ||
+      !description?.trim() ||
+      !brand?.trim() ||
+      !category ||
       isVariantInvalid ||
       isSpecificationsInvalid
     ) {
-      return res
-        .status(400)
-        .json({ message: "Invalid or missing product inputs" });
+      return res.status(400).json({
+        message: "Invalid or missing product inputs",
+      });
+    }
+
+    if (defaultVariants.length !== 1) {
+      return res.status(400).json({
+        message: "Exactly one default variant is required",
+      });
     }
 
     console.log(req.uploadedImages);
