@@ -1,4 +1,4 @@
-import cloudinary from "../utils/cloudinary.js";
+import cloudinaryConfig from "../utils/cloudinaryconfig.js";
 
 export const uploadingImages = async (req, res, next) => {
   try {
@@ -9,7 +9,7 @@ export const uploadingImages = async (req, res, next) => {
 
     const uploadToCloudinary = (fileBuffer) => {
       return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
+        const stream = cloudinaryConfig.uploader.upload_stream(
           {
             folder: "ZIA_KUTUB/PRODUCTS",
             resource_type: "image",

@@ -89,7 +89,7 @@ export const loginUser = async (req, res) => {
     }
 
     // Genrate JWT Token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
@@ -97,7 +97,7 @@ export const loginUser = async (req, res) => {
     res.status(201).json({
       message: "User login successfully",
       success: true,
-      token,
+      token: accessToken,
       user: {
         id: user._id,
         name: user.name,

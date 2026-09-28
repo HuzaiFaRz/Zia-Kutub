@@ -26,7 +26,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 export const otherPagesLinks1 = [
   {
     linkName: "Orders",
-    linkURL: "/orders",
+    linkURL: "/user/orders",
   },
   {
     linkName: "Contact Us",
@@ -114,27 +114,27 @@ const Navbar = () => {
   const productsLinks = [
     {
       linkName: "Quran Kareem",
-      linkURL: "quran-kareem",
+      linkURL: "/products/quran-kareem",
     },
     {
       linkName: "Prayer Mat",
-      linkURL: "prayer-mat",
+      linkURL: "/products/prayer-mat",
     },
     {
       linkName: "Koofi",
-      linkURL: "koofi",
+      linkURL: "/products/koofi",
     },
     {
       linkName: "Books",
-      linkURL: "books",
+      linkURL: "/products/books",
     },
     {
       linkName: "Fragrance Oil",
-      linkURL: "fragrance-oil",
+      linkURL: "/products/fragrance-oil",
     },
     {
       linkName: "Accessories",
-      linkURL: "/accessories",
+      linkURL: "/products/accessories",
     },
   ];
 
@@ -207,7 +207,7 @@ const Navbar = () => {
                     <>
                       <MenuItem>
                         <NavLink
-                          to="/login"
+                          to="/auth/login"
                           className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-dark`}
                         >
                           <LogIn size={19} />
@@ -217,7 +217,7 @@ const Navbar = () => {
 
                       <MenuItem>
                         <NavLink
-                          to="/sign-up"
+                          to="/auth/sign-up"
                           className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 font-medium bg-none text-brown transition hover:text-beige hover:bg-dark`}
                         >
                           <UserPlus size={19} />

@@ -59,7 +59,10 @@ const AdminDashboard = () => {
           })}
         </nav>
 
-        <button onClick={handleLogout} className={`${buttonCancleStyle}`}>
+        <button
+          onClick={handleLogout}
+          className={`flex items-center gap-3 px-4 py-2 rounded text-beige font-lato-regular text-sm bg-brown tracking-widest`}
+        >
           <LogOut className="w-4 h-4" />
           <span>Logout</span>
         </button>

@@ -212,7 +212,7 @@ const ThreeDProductsHero = () => {
         <h1 className="font-cinzel-bold uppercase text-beige text-3xl sm:text-5xl">
           Premium Quran Kareem
         </h1>
-        <span className="text-beige/80 font-lato-light text-center capitalize text-lg sm:text-xl max-w-[500px]">
+        <span className="text-beige/80 font-lato-light text-center capitalize text-lg sm:text-xl max-w-125">
           A beautifully designed edition of the Holy Quran, perfect for daily
           recitation, reflection, and spiritual connection.
         </span>
@@ -221,7 +221,7 @@ const ThreeDProductsHero = () => {
           <span className="text-lg">→</span>
         </button>
       </div>
-      <div className="w-full h-[600px]" ref={hero_ref}>
+      <div className="w-full h-150" ref={hero_ref}>
         <canvas id="canvas" className=""></canvas>
       </div>
     </div>

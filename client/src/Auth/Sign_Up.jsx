@@ -11,10 +11,10 @@ import {
   Mail,
   MailBadge,
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Sign_Up = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [msg, setMsg] = useState(["Hello!", true]);
   const [loading, setLoading] = useState(false);
   const [signupForm, setSignupForm] = useState({
     name: "",
@@ -36,41 +36,40 @@ const Sign_Up = () => {
     const { name, email, password } = signupForm;
     try {
       if (!name?.trim() || !email?.trim() || !password?.trim()) {
-        setMsg(["No empty fields allowed", false]);
+        toast("No empty fields allowed");
         return;
       }
       if (/^\s|\s$|\s{2,}/.test(name)) {
-        setMsg(["No extra spaces allowed in name", false]);
+        toast("No extra spaces allowed in name");
         return;
       }
-
       if (password.includes(" ")) {
-        setMsg(["No spaces allowed in password", false]);
+        toast("No spaces allowed in password");
         return;
       }
       if (name.length < 3) {
-        setMsg(["No names shorter than 3 characters", false]);
+        toast("No names shorter than 3 characters");
         return;
       }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        setMsg(["No invalid email formats allowed", false]);
+        toast("No invalid email formats allowed");
         return;
       }
       if (password.length < 8) {
-        setMsg(["No passwords shorter than 8 characters", false]);
+        toast("No passwords shorter than 8 characters");
         return;
       }
       setLoading(true);
       const res = await api.post("/auth/signup", signupForm);
-      setMsg([res.data.message, res.data.success]);
+      toast(res.data.message);
       setLoading(false);
       setTimeout(() => {
         navigate("/");
       }, 2000);
     } catch (error) {
       console.error(error.response?.data?.message);
-      setMsg([error.response?.data?.message || "An error Occurred", false]);
+      toast(error.response?.data?.message || "An error Occurred");
       setLoading(false);
     }
   };
@@ -88,11 +87,10 @@ const Sign_Up = () => {
           </p>
         </div>
 
-        {/* Error Message Display Example */}
         <div
-          className={`mb-4 p-3 text-lg font-cinzel-bold border bg-beige text-mehroon`}
+          className={`mb-3 p-3 text-xl font-cinzel-bold border bg-beige text-mehroon`}
         >
-          {msg[0]}
+          Hello! How Are You
         </div>
 
         {/* Form Fields */}
@@ -196,7 +194,10 @@ const Sign_Up = () => {
         {/* Footer Link */}
         <p className="text-center text-sm text-beige/60 mt-6">
           Already have an account?{" "}
-          <NavLink to={"/login"} className="text-beige font-medium underline">
+          <NavLink
+            to={"/auth/login"}
+            className="text-beige font-medium underline"
+          >
             Log In
           </NavLink>
         </p>

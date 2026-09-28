@@ -2,10 +2,10 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { Eye, EyeOff, LoaderCircle, Lock, Mail, UserKey } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Log_In = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [msg, setMsg] = useState(["Hello!", true]);
   const [loading, setLoading] = useState(false);
   const [loginForm, setLoginForm] = useState({
     email: "",
@@ -26,26 +26,26 @@ const Log_In = () => {
     const { email, password } = loginForm;
     try {
       if (!email?.trim() || !password?.trim()) {
-        setMsg(["No empty fields allowed", false]);
+        toast("No empty fields allowed");
         return;
       }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        setMsg(["No invalid email formats allowed", false]);
+        toast("No invalid email formats allowed");
         return;
       }
       setLoading(true);
       const res = await api.post("/auth/login", loginForm);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", res.data.user.id);
-      setMsg([res.data.message, res.data.success]);
+      toast(res.data.message);
       setLoading(false);
       setTimeout(() => {
         navigate("/");
       }, 2000);
     } catch (error) {
       console.error(error.response?.data?.message);
-      setMsg([error.response?.data?.message || "An error Occurred", false]);
+      toast(error.response?.data?.message || "An error Occurred");
       setLoading(false);
     }
   };
@@ -63,11 +63,10 @@ const Log_In = () => {
           </p>
         </div>
 
-        {/* Error Message Display */}
         <div
           className={`mb-4 p-3 text-lg font-cinzel-bold border bg-beige text-mehroon`}
         >
-          {msg[0]}
+          Hello! Again
         </div>
 
         {/* Form Fields */}
@@ -150,7 +149,10 @@ const Log_In = () => {
         {/* Footer Link */}
         <p className="text-center text-sm text-beige/60 mt-6">
           Don't have an account?{" "}
-          <NavLink to={"/sign-up"} className="text-beige font-medium underline">
+          <NavLink
+            to={"/auth/sign-up"}
+            className="text-beige font-medium underline"
+          >
             Sign Up
           </NavLink>
         </p>

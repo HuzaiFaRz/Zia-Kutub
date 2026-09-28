@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Product from "../models/Product.js";
 
 // Creating Product
@@ -11,29 +12,46 @@ export const createProduct = async (req, res) => {
       specifications,
       variants,
       description,
-      isAvailable,
     } = req.body;
 
-    console.log(req.uploadedImages);
-
-    const specificationsChecking = specifications.find(
-      (fields) => !fields.key || !fields.value,
+    const isSpecificationsInvalid = specifications.some(
+      (field) => !field?.key?.trim() || !field?.value?.trim(),
     );
 
-    const variantChecking = variants.find(
-      (fields) =>
-        !fields.color ||
-        !fields.price ||
-        !fields.stock ||
-        fields.images.length === 0 ||
-        !fields.isDefault,
-    );
+    const isVariantInvalid = variants.some((field) => {
+      const isColorInvalid = !field?.color?.trim();
+      const isPriceInvalid =
+        typeof field?.price !== "number" || field.price < 0;
+      const isStockInvalid =
+        typeof field?.stock !== "number" || field.stock < 0;
+      const isImagesInvalid =
+        !Array.isArray(field?.images) || field.images.length === 0;
+      const isDefaultInvalid = typeof field?.isDefault !== "boolean";
 
-    if (!title || !slug || !description || !brand || category === null) {
+      return (
+        isColorInvalid ||
+        isPriceInvalid ||
+        isStockInvalid ||
+        isImagesInvalid ||
+        isDefaultInvalid
+      );
+    });
+
+    if (
+      !title ||
+      !slug ||
+      !description ||
+      !brand ||
+      category === null ||
+      isVariantInvalid ||
+      isSpecificationsInvalid
+    ) {
       return res
         .status(400)
         .json({ message: "Invalid or missing product inputs" });
     }
+
+    console.log(req.uploadedImages);
 
     const product = await Product.create(req.body);
     res.status(201).json({
@@ -42,24 +60,7 @@ export const createProduct = async (req, res) => {
       product,
     });
   } catch (error) {
-    console.error("Product Creating Error:", error);
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-
-// Getting all Product
-export const gettingProduct = async (req, res) => {
-  try {
-    const products = await Product.find().sort({ createAt: -1 });
-    res.status(201).json({
-      message: "Products Get successfully",
-      success: true,
-      products,
-    });
-  } catch (error) {
-    console.error("Product Getting Error:", error);
+    console.error("error in creating product", error);
     return res.status(500).json({
       message: error.message,
     });
@@ -69,16 +70,31 @@ export const gettingProduct = async (req, res) => {
 // Update a Product
 export const updateProduct = async (req, res) => {
   try {
-    const updates = await Product.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    res.status(201).json({
-      message: "Products updated successfully",
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product ID format",
+      });
+    }
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { $set: req.body },
+      { new: true, runValidators: true },
+    ).lean();
+
+    if (!updatedProduct) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
+    return res.status(200).json({
       success: true,
-      updates,
+      message: "Product updated successfully",
+      product: updatedProduct,
     });
   } catch (error) {
-    console.error("Product Update Error:", error);
+    console.error("error in updating product", error);
     return res.status(500).json({
       message: error.message,
     });
@@ -88,14 +104,89 @@ export const updateProduct = async (req, res) => {
 // Delete a Product
 export const deleteProduct = async (req, res) => {
   try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.status(201).json({
-      message: "Products Deleted successfully",
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid product ID format" });
+    }
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (!deletedProduct) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
+    return res.status(200).json({
       success: true,
+      message: "Product deleted successfully",
     });
   } catch (error) {
-    console.error("Product Deleting Error:", error);
+    console.error("error in product deleting", error);
     return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// Getting Products
+export const gettingProducts = async (req, res) => {
+  try {
+    const { categoryId } = req.params;
+    const query = {};
+    if (categoryId) {
+      if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid category ID format",
+        });
+        query.category = categoryId;
+      }
+    }
+    const products = await Product.find(filter).sort({ createdAt: -1 }).lean();
+    const message =
+      products.length === 0
+        ? "No products found"
+        : "Products fetched successfully";
+    return res.status(200).json({
+      success: true,
+      message,
+      products,
+    });
+  } catch (error) {
+    console.error("error in gettings product", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Get a Product Details
+export const getProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product ID format",
+      });
+    }
+    const product = await Product.findById(id).lean();
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Product fetched successfully",
+      product,
+    });
+  } catch (error) {
+    console.error("error in getting product", error);
+    return res.status(500).json({
+      success: false,
       message: error.message,
     });
   }

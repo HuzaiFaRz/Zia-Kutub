@@ -1,32 +1,5 @@
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  height: auto;
-  user-select: none !important;
-  -webkit-user-drag: none !important;
-  -moz-user-select: none !important;
-  scroll-behavior: smooth !important;
-  /* overflow: hidden !important; */
-}
-
-#root {
-  width: 100%;
-  height: 100%;
-}
-
-button,
-svg,
-label {
-  cursor: pointer;
-  outline: none !important;
-}
-
 @font-face {
   font-family: "Cinzel-Regular";
   src: url("./assets/Fonts/Cinzel-Regular.ttf") format("truetype");
@@ -73,6 +46,32 @@ label {
   --color-dark: #0c0c0c;
   --color-mehroon: #1f150c;
   --breakpoint-end: 800px;
+}
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: auto;
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+  -moz-user-select: none !important;
+  scroll-behavior: smooth !important;
+  font-family: Lato-Regular;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+button,
+svg,
+label {
+  cursor: pointer;
+  outline: none !important;
 }
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,

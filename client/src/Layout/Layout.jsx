@@ -23,7 +23,6 @@ const Layout = () => {
 
   return (
     <main className="w-full min-h-screen bg-beige relative p-1 pt-[150px] sm:pt-[80px] md:pt-[180px]">
-      <Toast />
       <Navbar />
       <Outlet />
       <Footer />
