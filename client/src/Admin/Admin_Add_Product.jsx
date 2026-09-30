@@ -10,7 +10,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/axios";
 import Loading from "../Components/Loading";
@@ -38,6 +38,7 @@ const Admin_Add_Product = () => {
   const [product, setProduct] = useState({
     title: "",
     description: "",
+    slug: "",
     category: null,
     brand: "Generic",
     isAvailable: true,
@@ -64,12 +65,30 @@ const Admin_Add_Product = () => {
     ],
   });
 
+  const generateSlug = (title) => {
+    if (title) {
+      return title
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]/g, "");
+    }
+  };
+
   const handleProductChange = (e) => {
     const { name, value } = e.target;
-
     setProduct((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleTittleSlug = (e) => {
+    const { value } = e.target;
+    setProduct((prev) => ({
+      ...prev,
+      title: value,
+      slug: generateSlug(value),
     }));
   };
 
@@ -344,29 +363,33 @@ const Admin_Add_Product = () => {
       };
     });
   };
-
-  const generateSlug = (title) => {
-    return title
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, "-")
-      .replace(/[^\w-]/g, "");
-  };
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const {
+      title,
+      description,
+      slug,
+      category,
+      brand,
+      specifications,
+      variants,
+      isAvailable,
+    } = product;
+
     if (
-      !product.title ||
-      !product.description ||
-      !product.brand ||
-      product.category === null ||
-      product.category === undefined ||
-      !product.category
+      !title ||
+      !description ||
+      !brand ||
+      category === null ||
+      category === undefined ||
+      !category
     ) {
-      toast("Please Fill Basic Info", product.category);
+      toast("Please Fill Basic Info");
       return;
     }
-    const specificationsChecking = product.specifications.find(
+    const specificationsChecking = specifications.find(
       (fields) => !fields.key || !fields.value,
     );
 
@@ -375,7 +398,7 @@ const Admin_Add_Product = () => {
       return;
     }
 
-    const variantChecking = product.variants.find(
+    const variantChecking = variants.find(
       (variant) =>
         !variant.color ||
         variant.images.length === 0 ||
@@ -384,7 +407,7 @@ const Admin_Add_Product = () => {
           (size) => !size.size || size.price === "" || size.stock === "",
         ),
     );
-    const defaultCount = product.variants.filter(
+    const defaultCount = variants.filter(
       (variant) => variant.isDefault === true,
     ).length;
     const variantIsDefaultChecking = defaultCount !== 1;
@@ -397,15 +420,15 @@ const Admin_Add_Product = () => {
 
     const formData = new FormData();
 
-    formData.append("title", product.title);
-    formData.append("description", product.description);
-    formData.append("slug", generateSlug(product.title));
-    formData.append("category", product.category);
-    formData.append("brand", product.brand);
-    formData.append("isAvailable", product.isAvailable);
-    formData.append("specifications", JSON.stringify(product.specifications));
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("slug", slug);
+    formData.append("category", category);
+    formData.append("brand", brand);
+    formData.append("isAvailable", isAvailable);
+    formData.append("specifications", JSON.stringify(specifications));
 
-    const cleanVariants = product.variants.map((variant) => ({
+    const cleanVariants = variants.map((variant) => ({
       color: variant.color,
       sizes: variant.sizes.map((size) => ({
         size: size.size,
@@ -416,35 +439,34 @@ const Admin_Add_Product = () => {
     }));
 
     formData.append("variants", JSON.stringify(cleanVariants));
-    product.variants.forEach((variant) => {
+    variants.forEach((variant, ind) => {
       if (variant.images && variant.images.length > 0) {
-        variant.images.forEach((imgObj) => {
+        variant.images.forEach((imgObj, vidx) => {
           if (imgObj.file) {
-            formData.append("images", imgObj.file);
+            formData.append(`${slug}_${ind}_${vidx}`, imgObj.file);
           }
         });
       }
     });
 
-    console.log(product);
-
-    // for (let [key, value] of formData.entries()) {
-    //   console.log(`${key}:`, value);
-    // }
-
-    // try {
-    //   setLoading(true);
-    //   const response = await api.post("/products/create", formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   });
-    //   setLoading(false);
-    //   console.log("Product Created:", response.data);
-    // } catch (error) {
-    //   setLoading(false);
-    //   console.error("Upload error:", error);
-    // }
+    try {
+      setLoading(true);
+      const response = await api.post("/products/create", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast(response.data.message);
+      setLoading(false);
+      setProduct(product);
+      console.log("Product Created:", response.data.message);
+      setTimeout(() => {
+        navigate("/admin");
+      }, 2000);
+    } catch (error) {
+      setLoading(false);
+      console.error("Upload error:", error.message);
+    }
   };
 
   return (
@@ -493,8 +515,7 @@ const Admin_Add_Product = () => {
                     type="text"
                     name="title"
                     id="tittle"
-                    value={product.title}
-                    onChange={handleProductChange}
+                    onChange={handleTittleSlug}
                     placeholder="e.g. Premium Oud Attar"
                     required
                     className="w-full rounded-xl bg-brown/80 px-4 py-3 text-beige placeholder:text-beige/50"
@@ -572,6 +593,24 @@ const Admin_Add_Product = () => {
                     rows={5}
                     placeholder="Write a detailed description..."
                     className="w-full rounded-xl bg-brown/80 px-4 py-3 text-beige placeholder:text-beige/50 resize-none"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-lg text-beige" htmlFor="description">
+                    Slug{" "}
+                    <span className="text-sm text-beige/50">
+                      (Auto Generated)
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    disabled
+                    name="slug"
+                    id="slug"
+                    value={product.slug}
+                    placeholder="Auto Generated"
+                    className="w-full rounded-xl bg-brown/80 px-4 py-3 text-beige placeholder:text-beige/50 cursor-not-allowed"
                   />
                 </div>
               </div>

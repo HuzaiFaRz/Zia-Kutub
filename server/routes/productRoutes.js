@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.post(
   "/create",
-  upload.array("images", 12),
+  upload.any("images", 12),
   uploadingImages,
   createProduct,
 );

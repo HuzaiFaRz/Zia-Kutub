@@ -1,95 +1,126 @@
 import mongoose from "mongoose";
 import Product from "../models/Product.js";
+import cloudinary from "../utils/cloudinaryconfig.js";
 
 // Creating Product
 export const createProduct = async (req, res) => {
+  const uploadedPublicIds = [];
+
   try {
-    const {
-      title,
-      slug,
-      category,
-      brand,
-      specifications,
-      variants,
-      description,
-    } = req.body;
+    console.log("Req Body Data:", req.body);
+    const { title, slug, category, brand, specifications, description } =
+      req.body;
 
-    const isSpecificationsInvalid =
-      !Array.isArray(specifications) ||
-      specifications.some(
-        (field) => !field?.key?.trim() || !field?.value?.trim(),
-      );
+    let variants = [];
+    if (typeof req.body.variants === "string") {
+      try {
+        variants = JSON.parse(req.body.variants);
+      } catch (parseErr) {
+        console.error("JSON Parse Error in variants:", parseErr);
+        return res.status(400).json({
+          success: false,
+          message: "Invalid JSON format for variants",
+        });
+      }
+    } else {
+      variants = req.body.variants || [];
+    }
 
-    const isVariantInvalid =
-      !Array.isArray(variants) ||
-      variants.length === 0 ||
-      variants.some((variant) => {
-        const isColorInvalid = !variant?.color?.trim();
+    let specs = specifications;
+    if (typeof specifications === "string") {
+      try {
+        specs = JSON.parse(specifications);
+      } catch (e) {
+        specs = [];
+      }
+    }
 
-        const isSizesInvalid =
-          !Array.isArray(variant?.sizes) ||
-          variant.sizes.length === 0 ||
-          variant.sizes.some((size) => {
-            const isSizeInvalid = !size?.size?.trim();
-
-            const isPriceInvalid =
-              typeof size?.price !== "number" || size.price < 0;
-
-            const isStockInvalid =
-              typeof size?.stock !== "number" || size.stock < 0;
-
-            return isSizeInvalid || isPriceInvalid || isStockInvalid;
-          });
-
-        const isImagesInvalid =
-          !Array.isArray(variant?.images) || variant.images.length === 0;
-
-        const isDefaultInvalid = typeof variant?.isDefault !== "boolean";
-
-        return (
-          isColorInvalid ||
-          isSizesInvalid ||
-          isImagesInvalid ||
-          isDefaultInvalid
-        );
-      });
-
-    const defaultVariants = variants.filter(
-      (variant) => variant?.isDefault === true,
-    );
-
-    if (
+    const isInvalid =
       !title?.trim() ||
       !slug?.trim() ||
       !description?.trim() ||
       !brand?.trim() ||
       !category ||
-      isVariantInvalid ||
-      isSpecificationsInvalid
-    ) {
+      !Array.isArray(specs) ||
+      specs.some((s) => !s?.key?.trim() || !s?.value?.trim()) ||
+      !Array.isArray(variants) ||
+      variants.length === 0 ||
+      variants.filter((v) => v?.isDefault === true).length !== 1 ||
+      variants.some(
+        (v) =>
+          !v?.color?.trim() ||
+          typeof v?.isDefault !== "boolean" ||
+          !Array.isArray(v?.sizes) ||
+          v.sizes.length === 0 ||
+          v.sizes.some(
+            (sz) =>
+              !sz?.size?.trim() ||
+              typeof sz?.price !== "number" ||
+              sz.price < 0 ||
+              typeof sz?.stock !== "number" ||
+              sz.stock < 0,
+          ),
+      );
+
+    if (isInvalid) {
+      console.log("--> Validation Failed in createProduct");
       return res.status(400).json({
+        success: false,
         message: "Invalid or missing product inputs",
       });
     }
 
-    if (defaultVariants.length !== 1) {
-      return res.status(400).json({
-        message: "Exactly one default variant is required",
+    variants = variants.map((variant, index) => {
+      const uploadedImgs = [];
+
+      if (req.uploadedImages) {
+        Object.keys(req.uploadedImages).forEach((key) => {
+          if (key.includes(`_${index}_`) || key === `variant_${index}_images`) {
+            uploadedImgs.push(...req.uploadedImages[key]);
+          }
+        });
+      }
+
+      uploadedImgs.forEach((img) => {
+        if (img.public_id) uploadedPublicIds.push(img.public_id);
       });
-    }
 
-    console.log(req.uploadedImages);
+      return {
+        ...variant,
+        images: uploadedImgs,
+      };
+    });
 
-    const product = await Product.create(req.body);
-    res.status(201).json({
+    const product = await Product.create({
+      title,
+      slug,
+      category,
+      brand,
+      specifications: specs,
+      description,
+      variants,
+    });
+
+    return res.status(201).json({
       message: "Product Created successfully",
       success: true,
       product,
     });
   } catch (error) {
-    console.error("error in creating product", error);
+    console.error("Error in createProduct:", error);
+
+    if (uploadedPublicIds.length > 0) {
+      console.log("Cleaning up uploaded images from Cloudinary");
+      await Promise.all(
+        uploadedPublicIds.map((public_id) =>
+          cloudinary.uploader.destroy(public_id),
+        ),
+      );
+    }
+
     return res.status(500).json({
-      message: error.message,
+      success: false,
+      message: error.message || "Internal Server Error",
     });
   }
 };

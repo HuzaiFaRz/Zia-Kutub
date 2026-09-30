@@ -1,21 +1,25 @@
-import cloudinaryConfig from "../utils/cloudinaryconfig.js";
+import cloudinary from "../utils/cloudinaryconfig.js";
 
 export const uploadingImages = async (req, res, next) => {
   try {
     if (!req.files || req.files.length === 0) {
-      req.uploadedImages = [];
+      req.uploadedImages = {};
       return next();
     }
 
-    const uploadToCloudinary = (fileBuffer) => {
+    const uploadToCloudinary = (fileBuffer, fieldname, slug) => {
       return new Promise((resolve, reject) => {
-        const stream = cloudinaryConfig.uploader.upload_stream(
+        const stream = cloudinary.uploader.upload_stream(
           {
-            folder: `ZIA_KUTUB/PRODUCTS/${req.slug}`,
+            folder: "PRODUCTS",
+            public_id: `${fieldname}_${Date.now()}`,
             resource_type: "image",
           },
           (error, result) => {
-            if (error) return reject(error);
+            if (error) {
+              console.error("Cloudinary Single Stream Error:", error);
+              return reject(error);
+            }
             resolve({
               url: result.secure_url,
               public_id: result.public_id,
@@ -27,18 +31,35 @@ export const uploadingImages = async (req, res, next) => {
       });
     };
 
-    // 3. Saari `req.files` ko Parallel upload karein Promise.all se
-    const uploadPromises = req.files.map((file) =>
-      uploadToCloudinary(file.buffer),
-    );
-    const uploadedResults = await Promise.all(uploadPromises);
+    const slug = req.body.slug || "uncategorized";
+    const uploadedImagesMap = {};
 
-    // 4. Results ko Next Controller ke liye req object par attach kar dein
-    req.uploadedImages = uploadedResults;
+    const uploadPromises = req.files.map(async (file) => {
+      try {
+        const result = await uploadToCloudinary(
+          file.buffer,
+          file.fieldname,
+          slug,
+        );
 
-    next(); // Agle controller / function par jayein
+        if (!uploadedImagesMap[file.fieldname]) {
+          uploadedImagesMap[file.fieldname] = [];
+        }
+        uploadedImagesMap[file.fieldname].push(result);
+      } catch (err) {
+        console.error(`Failed to upload file field ${file.fieldname}:`, err);
+        throw err;
+      }
+    });
+
+    await Promise.all(uploadPromises);
+
+    req.uploadedImages = uploadedImagesMap;
+    console.log("Image Upload Success! Moving to createProduct...");
+
+    return next();
   } catch (error) {
-    console.error("Images Uploading Error:", error);
+    console.error("Fatal Error in uploadingImages Middleware:", error);
     return res.status(500).json({
       success: false,
       message: "Cloudinary Image Upload Failed",
