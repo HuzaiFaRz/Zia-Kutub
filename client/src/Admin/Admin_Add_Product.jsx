@@ -379,9 +379,9 @@ const Admin_Add_Product = () => {
     } = product;
 
     if (
-      !title ||
-      !description ||
-      !brand ||
+      !title?.trim() ||
+      !description?.trim() ||
+      !brand.trim() ||
       category === null ||
       category === undefined ||
       !category
@@ -389,8 +389,19 @@ const Admin_Add_Product = () => {
       toast("Please Fill Basic Info");
       return;
     }
+
+    let spaceRegex = /^\s|\s$|\s{2,}/;
+
+    if (
+      spaceRegex.test(title) ||
+      spaceRegex.test(description) ||
+      spaceRegex.test(brand)
+    ) {
+      toast("No extra spaces allowed in Fields");
+    }
+
     const specificationsChecking = specifications.find(
-      (fields) => !fields.key || !fields.value,
+      (fields) => !fields.key.trim() || !fields.value.trim,
     );
 
     if (specificationsChecking) {
@@ -413,7 +424,6 @@ const Admin_Add_Product = () => {
     const variantIsDefaultChecking = defaultCount !== 1;
 
     if (variantChecking || variantIsDefaultChecking) {
-      console.log(variantChecking, variantIsDefaultChecking);
       toast("Please Fill Variant Fields");
       return;
     }
@@ -443,7 +453,10 @@ const Admin_Add_Product = () => {
       if (variant.images && variant.images.length > 0) {
         variant.images.forEach((imgObj, vidx) => {
           if (imgObj.file) {
-            formData.append(`${slug}_${ind}_${vidx}`, imgObj.file);
+            formData.append(
+              `${slug}_${variant.color}_${ind}_${vidx}`,
+              imgObj.file,
+            );
           }
         });
       }
@@ -460,9 +473,9 @@ const Admin_Add_Product = () => {
       setLoading(false);
       setProduct(product);
       console.log("Product Created:", response.data.message);
-      setTimeout(() => {
-        navigate("/admin");
-      }, 2000);
+      // setTimeout(() => {
+      //   navigate("/admin");
+      // }, 2000);
     } catch (error) {
       setLoading(false);
       console.error("Upload error:", error.message);

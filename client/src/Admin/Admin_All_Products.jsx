@@ -1,7 +1,8 @@
+import { Outlet } from "react-router-dom";
 
 const Admin_All_Products = () => {
   return (
-    <section className="w-full h-full bg-mehroon">
+    <section className="w-full h-full bg-mehroon mt-5">
       <div className="w-full p-4 items-center text-center justify-center">
         <h1 className="text-4xl mb-2 text-beige font-cinzel-bold">
           All Products
@@ -11,6 +12,11 @@ const Admin_All_Products = () => {
           mat variants.
         </p>
       </div>
+
+      <div className="actionbar w-full p-3">
+        <input type="search" placeholder="search Product" />
+      </div>
+      <Outlet />
     </section>
   );
 };

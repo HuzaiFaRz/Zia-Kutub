@@ -1,16 +1,14 @@
-import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   Banknote,
   BookText,
   Car,
   Handbag,
-  Info,
   LayoutDashboard,
   LogIn,
   LogOut,
   Logs,
-  MessageCircle,
   Minus,
   MoveRight,
   Plus,
@@ -138,6 +136,8 @@ const Navbar = () => {
     },
   ];
 
+  const location = useLocation();
+
   return (
     <>
       <header className="w-full p-2 xl:p-3 fixed top-0 z-10 bg-beige">
@@ -237,18 +237,22 @@ const Navbar = () => {
               </button>
             </div>
           </div>
-          <div className="w-full hidden md:flex justify-evenly items-center text-beige text-sm lg:text-lg">
+          <div className="w-full hidden md:flex justify-evenly items-center text-beige text-sm">
             {productsLinks.map((link, ind) => {
               const { linkName, linkURL } = link;
               return (
                 <NavLink
                   key={ind}
                   to={linkURL}
-                  className={
-                    "bg-dark text-beige p-1 px-5 rounded-4xl hover:scale-105 transition-transform"
-                  }
+                  className={`text-beige py-2 px-5 hover:scale-105 transition-transform relative group uppercase font-bold tracking-wider`}
+                  style={{
+                    scale: location.pathname === linkURL ? "1.1" : "1",
+                  }}
                 >
                   {linkName}
+                  <span
+                    className={`absolute left-1/2 bottom-0 w-full h-0.5 bg-beige transform -translate-x-1/2 scale-x-0 group-hover:scale-x-100 ${location.pathname === linkURL && "scale-x-100"} transition-transform duration-300 ease-out origin-center`}
+                  ></span>
                 </NavLink>
               );
             })}

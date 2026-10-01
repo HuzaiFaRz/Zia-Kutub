@@ -23,6 +23,7 @@ import Dashboard from "./User/Dashboard";
 import Sign_Up from "./Auth/Sign_Up";
 import Log_In from "./Auth/Log_In";
 import Toast from "./Components/Toast";
+import Admin_All_Products from "./Admin/Admin_All_Products";
 
 const App = () => {
   new Lenis({
@@ -58,6 +59,7 @@ const App = () => {
               </Admin_Route>
             }
           >
+            <Route path="product/all" element={<Admin_All_Products />} />
             <Route path="product/add" element={<Admin_Add_Product />} />
             <Route path="product/edit/:id" element={<Admin_Edit_Product />} />
             <Route path="orders" element={<Admin_All_Orders />} />
