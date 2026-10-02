@@ -190,24 +190,28 @@ export const deleteProduct = async (req, res) => {
 export const gettingProducts = async (req, res) => {
   try {
     const { categoryId } = req.params;
+
     const query = {};
+
     if (categoryId) {
       if (!mongoose.Types.ObjectId.isValid(categoryId)) {
         return res.status(400).json({
           success: false,
           message: "Invalid category ID format",
         });
-        query.category = categoryId;
       }
+
+      query.category = categoryId;
     }
-    const products = await Product.find(filter).sort({ createdAt: -1 }).lean();
-    const message =
-      products.length === 0
-        ? "No products found"
-        : "Products fetched successfully";
+
+    const products = await Product.find(query).sort({ createdAt: -1 }).lean();
+
     return res.status(200).json({
       success: true,
-      message,
+      message:
+        products.length === 0
+          ? "No products found"
+          : "Products fetched successfully",
       products,
     });
   } catch (error) {

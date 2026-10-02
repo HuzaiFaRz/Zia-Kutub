@@ -14,25 +14,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api/axios";
 import Loading from "../Components/Loading";
-
-const categories = [
-  {
-    _id: "66f0a1b2c3d4e5f678901234",
-    name: "Quran Kareem",
-    slug: "quran-kareem",
-  },
-  { _id: "66f0a1b2c3d4e5f678901235", name: "Islamic Books", slug: "books" },
-  { _id: "66f0a1b2c3d4e5f678901236", name: "Prayer Mat", slug: "prayer-mat" },
-  { _id: "66f0a1b2c3d4e5f678901237", name: "Koofi / Topi", slug: "koofi" },
-  {
-    _id: "66f0a1b2c3d4e5f678901238",
-    name: "Fragrance Oil",
-    slug: "fragrance-oil",
-  },
-  { _id: "66f0a1b2c3d4e5f678901239", name: "Accessories", slug: "accessories" },
-];
+import { AuthUseContext } from "../Contexts/Auth_Context_Provider";
 
 const Admin_Add_Product = () => {
+  const { categories } = AuthUseContext();
+
   const [loading, setLoading] = useState(false);
 
   const [product, setProduct] = useState({
@@ -473,9 +459,9 @@ const Admin_Add_Product = () => {
       setLoading(false);
       setProduct(product);
       console.log("Product Created:", response.data.message);
-      // setTimeout(() => {
-      //   navigate("/admin");
-      // }, 2000);
+      setTimeout(() => {
+        navigate("/admin");
+      }, 2000);
     } catch (error) {
       setLoading(false);
       console.error("Upload error:", error.message);

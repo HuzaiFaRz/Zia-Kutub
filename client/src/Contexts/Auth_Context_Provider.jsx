@@ -13,6 +13,27 @@ const Auth_Context_Provider = ({ children }) => {
     password: "sdkjfdskjfnds",
   });
 
+  const categories = [
+    {
+      _id: "66f0a1b2c3d4e5f678901234",
+      name: "Quran Kareem",
+      slug: "quran-kareem",
+    },
+    { _id: "66f0a1b2c3d4e5f678901235", name: "Islamic Books", slug: "books" },
+    { _id: "66f0a1b2c3d4e5f678901236", name: "Prayer Mat", slug: "prayer-mat" },
+    { _id: "66f0a1b2c3d4e5f678901237", name: "Koofi / Topi", slug: "koofi" },
+    {
+      _id: "66f0a1b2c3d4e5f678901238",
+      name: "Fragrance Oil",
+      slug: "fragrance-oil",
+    },
+    {
+      _id: "66f0a1b2c3d4e5f678901239",
+      name: "Accessories",
+      slug: "accessories",
+    },
+  ];
+
   // const isUserValid = async () => {
   //   try {
   //     setAuthLoading(true);
@@ -25,7 +46,7 @@ const Auth_Context_Provider = ({ children }) => {
   // };
 
   return (
-    <AuthContextCreated.Provider value={{ authLoading, user }}>
+    <AuthContextCreated.Provider value={{ authLoading, user, categories }}>
       {authLoading ? <Loading /> : children}
     </AuthContextCreated.Provider>
   );
